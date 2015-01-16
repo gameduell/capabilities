@@ -6,7 +6,7 @@ package capabilities;
  */
 typedef OS = {
 	name: String,
-	Version: String,
+	version: String,
 	fullName: String
 }
 

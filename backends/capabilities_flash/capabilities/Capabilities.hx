@@ -8,6 +8,7 @@ import capabilities.Capabilities.OS;
 class Capabilities
 {
 	private static var instance: Capabilities;
+	private static var os: OS;
 	private function new()
 	{}
 	public var applicationName(get, null): String;
@@ -37,7 +38,7 @@ class Capabilities
 
 	public function get_isDebug(): Bool
 	{
-
+		return Capabilities.isDebug;
 	}
 	public function get_applicatonName(): String
 	{
@@ -51,32 +52,39 @@ class Capabilities
 
 	public function get_os(): OS
 	{
-
+		var pattern = ~/[^0-9.]+/;//get only digits out of a string
+		if(os.name == null)
+		{
+			os.name = Capabilities.os;
+			os.fullName = Capabilities.os;
+			os.version = pattern.split(Capabilities.os)[1];
+		}
+		return os;
 	}
 
 	public function get_screenDPI(): Float
 	{
-
+		return Capabilities.screenDPI;
 	}
 
 	public function get_resolutionX(): Int
 	{
-
+		return Capabilities.resolutionX;
 	}
 
 	public function get_resolutionY(): Int
 	{
-
+		return Capabilities.resolutionY;
 	}
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-
+		return null;
 	}
 
 	public function get_deviceID(): String
 	{
-
+		return null;
 	}
 
 	public function get_platform(): Platform
