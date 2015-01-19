@@ -43,10 +43,6 @@ class Capabilities
 	{
 		return flash.system.Capabilities.isDebugger;
 	}
-	public function get_applicatonName(): String
-	{
-		return BuildInfo.getInstance().APPLICATION_NAME;
-	}
 
 	public function get_applicationVersion(): String
 	{

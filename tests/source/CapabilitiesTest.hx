@@ -22,6 +22,12 @@ class CapabilitiesTest extends unittest.TestCase
 	{
 		#if flash
 			assertEquals(Capabilities.instance().platform, Platform.FLASH);
+		#elseif ios
+			assertEquals(Capabilities.instance().platform, Platform.IOS);
+		#elseif android
+			assertEquals(Capabilities.instance().platform, Platform.ANDROID);
+		#elseif html5
+			assertEquals(Capabilities.instance().platform, Platform.HTML5);
 		#end
 	}
 }

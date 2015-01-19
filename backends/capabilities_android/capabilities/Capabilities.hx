@@ -89,4 +89,15 @@ class Capabilities
 	{
 		return BuildInfo.getInstance();
 	}
+
+	public function get_applicationName(): String
+	{
+		return BuildInfo.getInstance().APPLICATION_NAME;
+	}
+
+	public function get_deviceName(): String
+	{
+		return null;
+	}
+
 }

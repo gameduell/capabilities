@@ -4,7 +4,7 @@ package capabilities;
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
-import capabilities.Capabilities.OS;
+import capabilities.Platform;
 class Capabilities
 {
 	private static var instance: Capabilities;
@@ -37,11 +37,7 @@ class Capabilities
 
 	public function get_isDebug(): Bool
 	{
-
-	}
-	public function get_applicatonName(): String
-	{
-
+		return false;
 	}
 
 	public function get_applicationVersion(): String
@@ -87,5 +83,15 @@ class Capabilities
 	public function get_buildInfo(): BuildInfo
 	{
 		return BuildInfo.getInstance();
+	}
+
+	public function get_applicationName(): String
+	{
+		return BuildInfo.getInstance().APPLICATION_NAME;
+	}
+
+	public function get_deviceName(): String
+	{
+		return null;
 	}
 }
