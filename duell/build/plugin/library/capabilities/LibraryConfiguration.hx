@@ -48,7 +48,6 @@ class LibraryConfiguration
             LIBRARIES: [],
             APPLICATION_NAME: "NONE",
             APPLICATION_BUNDLE: "NONE",
-            APPLICATION_ID: "NONE",
             APPLICATION_VERSION: "NONE",
             APPLICATION_BUILD_NUMBER: "NONE",
             COMPANY_NAME: "NONE",

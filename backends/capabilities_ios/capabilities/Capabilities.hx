@@ -83,4 +83,9 @@ class Capabilities
 	{
 		return Platform.IOS;
 	}
+
+	public function get_buildInfo(): BuildInfo
+	{
+		return BuildInfo.getInstance();
+	}
 }

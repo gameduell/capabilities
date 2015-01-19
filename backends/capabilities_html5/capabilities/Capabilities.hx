@@ -83,4 +83,9 @@ class Capabilities
 	{
 		return Platform.HTML5;
 	}
+
+	public function get_builInfo(): BuildInfo
+	{
+		return BuildInfo.getInstance();
+	}
 }

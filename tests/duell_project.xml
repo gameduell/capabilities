@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<app file="capabilitiesExample" title="Capabilities App" package="com.gameduell.tests.capabilities"
+		version="0.0.1" company="GameDuell GmbH" />
+
+	<main name="Main" />
+
+	<source path="source" />
+
+	<duelllib name="capabilities" version="master"/>
+    <duelllib name="unittest" version="2.0.0+" />
+
+    <platform-config>
+    </platform-config>
+
+</project>

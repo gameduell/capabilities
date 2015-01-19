@@ -19,7 +19,7 @@ class LibraryXMLParser
         LibraryConfiguration.getData().APPLICATION_NAME = Configuration.getData().APP.TITLE;
         LibraryConfiguration.getData().APPLICATION_BUNDLE = Configuration.getData().APP.PACKAGE;
         LibraryConfiguration.getData().COMPANY_NAME = Configuration.getData().APP.COMPANY;
-        LibraryConfiguration.getData().APPLICATION_VERSION = Configuration.getData().APP.COMPANY;
+        LibraryConfiguration.getData().APPLICATION_VERSION = Configuration.getData().APP.VERSION;
         LibraryConfiguration.getData().APPLICATION_BUILD_NUMBER = Configuration.getData().APP.BUILD_NUMBER;
         LibraryConfiguration.getData().HAXE_COMPILE_ARGS = Configuration.getData().HAXE_COMPILE_ARGS;
         LibraryConfiguration.getData().DEPENDENCIES = Configuration.getData().DEPENDENCIES;

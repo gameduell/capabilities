@@ -4,15 +4,9 @@ package capabilities;
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
-typedef OS = {
-	name: String,
-	version: String,
-	fullName: String
-}
-
 extern class Capabilities
 {
-	private static var instance: Capabilities;
+	private static var psInstance: Capabilities;
 
 	public var applicationName(get, null): String;
 	public var applicationVersion(get, null): String;
@@ -30,6 +24,8 @@ extern class Capabilities
 	public var deviceName(get, null): String;
 	public var deviceID(get, null): String;
 	public var platform(get, null): Platform;
+
+	public var buildInfo(get, null): BuildInfo;
 
 
 	public static function instance(): Capabilities;

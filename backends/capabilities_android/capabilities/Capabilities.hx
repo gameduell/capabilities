@@ -25,6 +25,7 @@ class Capabilities
 	public var deviceID(get, null): String;
 	public var platform(get, null): Platform;
 
+	public var buildInfo(get, null): BuildInfo;
 
 	public static function instance(): Capabilities
 	{
@@ -82,5 +83,10 @@ class Capabilities
 	public function get_platform(): Platform
 	{
 		return Platform.ANDROID;
+	}
+
+	public function get_buildInfo(): BuildInfo
+	{
+		return BuildInfo.getInstance();
 	}
 }

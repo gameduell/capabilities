@@ -4,11 +4,12 @@ package capabilities;
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
-import capabilities.Capabilities.OS;
+import Math;
+import capabilities.Platform;
 class Capabilities
 {
-	private static var instance: Capabilities;
-	private static var os: OS;
+	private static var psInstance: Capabilities;
+	private static var __os: OS;
 	private function new()
 	{}
 	public var applicationName(get, null): String;
@@ -26,55 +27,57 @@ class Capabilities
 	public var deviceID(get, null): String;
 	public var platform(get, null): Platform;
 
+	public var buildInfo(get, null): BuildInfo;
+
 
 	public static function instance(): Capabilities
 	{
-		if(instance == null)
+		if(psInstance == null)
 		{
-			instance = new Capabilities();
+			psInstance = new Capabilities();
 		}
-		return instance;
+		return psInstance;
 	}
 
 	public function get_isDebug(): Bool
 	{
-		return Capabilities.isDebug;
+		return flash.system.Capabilities.isDebugger;
 	}
 	public function get_applicatonName(): String
 	{
-
+		return BuildInfo.getInstance().APPLICATION_NAME;
 	}
 
 	public function get_applicationVersion(): String
 	{
-
+		return BuildInfo.getInstance().APPLICATION_VERSION;
 	}
 
 	public function get_os(): OS
 	{
 		var pattern = ~/[^0-9.]+/;//get only digits out of a string
-		if(os.name == null)
+		if(__os.name == null)
 		{
-			os.name = Capabilities.os;
-			os.fullName = Capabilities.os;
-			os.version = pattern.split(Capabilities.os)[1];
+			__os.name = flash.system.Capabilities.os;
+			__os.fullName = flash.system.Capabilities.os;
+			__os.version = pattern.split(flash.system.Capabilities.os)[1];
 		}
-		return os;
+		return __os;
 	}
 
 	public function get_screenDPI(): Float
 	{
-		return Capabilities.screenDPI;
+		return flash.system.Capabilities.screenDPI;
 	}
 
 	public function get_resolutionX(): Int
 	{
-		return Capabilities.resolutionX;
+		return Math.ceil(flash.system.Capabilities.screenResolutionX);
 	}
 
 	public function get_resolutionY(): Int
 	{
-		return Capabilities.resolutionY;
+		return Math.ceil(flash.system.Capabilities.screenResolutionY);
 	}
 
 	public function get_deviceOrientation(): DeviceOrientation
@@ -90,5 +93,19 @@ class Capabilities
 	public function get_platform(): Platform
 	{
 		return Platform.FLASH;
+	}
+	public function get_buildInfo(): BuildInfo
+	{
+		return BuildInfo.getInstance();
+	}
+
+	public function get_applicationName(): String
+	{
+		return BuildInfo.getInstance().APPLICATION_NAME;
+	}
+
+	public function get_deviceName(): String
+	{
+		return null;
 	}
 }
