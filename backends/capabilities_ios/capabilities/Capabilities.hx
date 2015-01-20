@@ -5,9 +5,11 @@ package capabilities;
  * Copyright (c) 2014 GameDuell GmbH
  */
 import capabilities.Platform;
+import cpp.Lib;
 class Capabilities
 {
-	private static var instance: Capabilities;
+	private static var psInstance: Capabilities;
+	private static var getDeviceOrientationNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceOrientation",0);
 	private function new()
 	{}
 	public var applicationName(get, null): String;
@@ -24,15 +26,16 @@ class Capabilities
 	public var deviceName(get, null): String;
 	public var deviceID(get, null): String;
 	public var platform(get, null): Platform;
+	public var buildInfo(get, null): BuildInfo;
 
 
 	public static function instance(): Capabilities
 	{
-		if(instance == null)
+		if(psInstance == null)
 		{
-			instance = new Capabilities();
+			psInstance = new Capabilities();
 		}
-		return instance;
+		return psInstance;
 	}
 
 	public function get_isDebug(): Bool
@@ -42,37 +45,37 @@ class Capabilities
 
 	public function get_applicationVersion(): String
 	{
-
+		return BuildInfo.getInstance().APPLICATION_VERSION;
 	}
 
 	public function get_os(): OS
 	{
-
+		return null;
 	}
 
 	public function get_screenDPI(): Float
 	{
-
+		return 0;
 	}
 
 	public function get_resolutionX(): Int
 	{
-
+		return 0;
 	}
 
 	public function get_resolutionY(): Int
 	{
-
+		return 0;
 	}
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-
+		return getDeviceOrientationNative() == 0 ? DeviceOrientation.Portrait : DeviceOrientation.Landscape;
 	}
 
 	public function get_deviceID(): String
 	{
-
+		return null;
 	}
 
 	public function get_platform(): Platform

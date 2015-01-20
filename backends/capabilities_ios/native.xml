@@ -1,0 +1,4 @@
+<xml>
+	<compilerflag value="-I${haxelib:capabilities}/backends/capabilities_ios/project/include" />
+</xml>
+

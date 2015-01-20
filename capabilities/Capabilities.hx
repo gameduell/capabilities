@@ -83,5 +83,6 @@ extern class Capabilities
 	* get the Capabilities instance
 	*/
 	public static function instance(): Capabilities;
+
 	private function new();
 }

@@ -3,6 +3,7 @@
  * @author kgar
  * copyright (c) 2015 Gameduell GmbH
  */
+import capabilities.DeviceOrientation;
 import capabilities.Platform;
 import capabilities.BuildInfo;
 import capabilities.Capabilities;
@@ -29,5 +30,10 @@ class CapabilitiesTest extends unittest.TestCase
 		#elseif html5
 			assertEquals(Capabilities.instance().platform, Platform.HTML5);
 		#end
+	}
+
+	public function testDeviceOrientation(): Void
+	{
+		assertEquals(Capabilities.instance().deviceOrientation, DeviceOrientation.Portrait);
 	}
 }
