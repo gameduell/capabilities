@@ -1,7 +1,6 @@
 #ifndef STATIC_LINK
 #define IMPLEMENT_API
 #endif
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #include <hx/CFFI.h>
 
@@ -26,6 +25,7 @@ static value ioscapabilities_getDeviceOrientation()
     return alloc_int(1);
 }
 DEFINE_PRIM(ioscapabilities_getDeviceOrientation,0);
+
 
 
 extern "C" int ioscapabilities_register_prims () { return 0; }
