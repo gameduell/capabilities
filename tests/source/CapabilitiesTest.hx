@@ -32,8 +32,14 @@ class CapabilitiesTest extends unittest.TestCase
 		#end
 	}
 
+	
 	public function testDeviceOrientation(): Void
 	{
+		#if ios
 		assertEquals(Capabilities.instance().deviceOrientation, DeviceOrientation.Portrait);
+		#else
+		assertTrue(true);
+		#end
 	}
+	
 }
