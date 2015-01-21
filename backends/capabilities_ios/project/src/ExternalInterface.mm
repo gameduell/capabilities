@@ -29,6 +29,4 @@ static value ioscapabilities_getDeviceOrientation()
 }
 DEFINE_PRIM(ioscapabilities_getDeviceOrientation,0);
 
-
-
 extern "C" int ioscapabilities_register_prims () { return 0; }

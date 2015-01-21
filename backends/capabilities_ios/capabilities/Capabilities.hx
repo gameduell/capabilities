@@ -38,62 +38,62 @@ class Capabilities
 		return psInstance;
 	}
 
-	public function get_isDebug(): Bool
+	private function get_isDebug(): Bool
 	{
 		return false;
 	}
 
-	public function get_applicationVersion(): String
+	private function get_applicationVersion(): String
 	{
 		return BuildInfo.getInstance().APPLICATION_VERSION;
 	}
 
-	public function get_os(): OS
+	private function get_os(): OS
 	{
 		return null;
 	}
 
-	public function get_screenDPI(): Float
+	private function get_screenDPI(): Float
 	{
 		return 0;
 	}
 
-	public function get_resolutionX(): Int
+	private function get_resolutionX(): Int
 	{
 		return 0;
 	}
 
-	public function get_resolutionY(): Int
+	private function get_resolutionY(): Int
 	{
 		return 0;
 	}
 
-	public function get_deviceOrientation(): DeviceOrientation
+	private function get_deviceOrientation(): DeviceOrientation
 	{
 		return getDeviceOrientationNative() == 0 ? DeviceOrientation.Portrait : DeviceOrientation.Landscape;
 	}
 
-	public function get_deviceID(): String
+	private function get_deviceID(): String
 	{
 		return null;
 	}
 
-	public function get_platform(): Platform
+	private function get_platform(): Platform
 	{
 		return Platform.IOS;
 	}
 
-	public function get_buildInfo(): BuildInfo
+	private function get_buildInfo(): BuildInfo
 	{
 		return BuildInfo.getInstance();
 	}
 
-	public function get_applicationName(): String
+	private function get_applicationName(): String
 	{
 		return BuildInfo.getInstance().APPLICATION_NAME;
 	}
 
-	public function get_deviceName(): String
+	private function get_deviceName(): String
 	{
 		return null;
 	}
