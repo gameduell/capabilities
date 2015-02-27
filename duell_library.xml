@@ -2,7 +2,6 @@
 <library>
    
     <haxelib name="msignal"/>
-    <dullib name="types"/>
 
     <include path="backends/capabilities_html5/duell_library.xml" if="html5" />
     <include path="backends/capabilities_flash/duell_library.xml" if="flash" />

@@ -10,6 +10,8 @@ class Capabilities
 {
 	private static var psInstance: Capabilities;
 	private static var getDeviceOrientationNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceOrientation",0);
+	private static var getDeviceIDNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceID",0);
+	private static var getDeviceNameNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceName",0);
 	private function new()
 	{}
 	public var applicationName(get, null): String;
@@ -75,7 +77,7 @@ class Capabilities
 
 	private function get_deviceID(): String
 	{
-		return null;
+		return getDeviceIDNative();
 	}
 
 	private function get_platform(): Platform
@@ -95,6 +97,6 @@ class Capabilities
 
 	private function get_deviceName(): String
 	{
-		return null;
+		return getDeviceNameNative();
 	}
 }

@@ -32,7 +32,26 @@ class CapabilitiesTest extends unittest.TestCase
 		#end
 	}
 
-	
+    public function testDeviceID(): Void
+    {
+
+        #if ios
+             assertTrue(Capabilities.instance().deviceID != null);
+        #else
+            assertTrue(true);
+        #end
+
+    }
+    public function testDeviceName(): Void
+    {
+
+        #if ios
+             assertTrue(Capabilities.instance().deviceName != null);
+        #else
+            assertTrue(true);
+        #end
+
+    }
 	public function testDeviceOrientation(): Void
 	{
 		#if ios
