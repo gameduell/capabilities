@@ -46,7 +46,7 @@ class Capabilities
 
 	public function get_applicationVersion(): String
 	{
-		return BuildInfo.getInstance().APPLICATION_VERSION;
+		return BuildInfo.instance().APPLICATION_VERSION;
 	}
 
 	public function get_os(): OS
@@ -92,12 +92,12 @@ class Capabilities
 	}
 	public function get_buildInfo(): BuildInfo
 	{
-		return BuildInfo.getInstance();
+		return BuildInfo.instance();
 	}
 
 	public function get_applicationName(): String
 	{
-		return BuildInfo.getInstance().APPLICATION_NAME;
+		return BuildInfo.instance().APPLICATION_NAME;
 	}
 
 	public function get_deviceName(): String

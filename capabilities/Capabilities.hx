@@ -1,17 +1,14 @@
 package capabilities;
+
+import capabilities.Platform;
+
 /**
  * @author kgar
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
-import capabilities.Platform;
 extern class Capabilities
 {
-	/**
-	* @private
-	*/
-	private static var psInstance: Capabilities;
-
 	/**
 	* applicationName the application name specefied in the duell_project.xml
 	*/
@@ -29,7 +26,7 @@ extern class Capabilities
 	/**
 	* os the current operating system of the application
 	*/
-	public var os(get, null):OS;
+	public var os(get, null): OS;
 
 	/**
 	* isDebug if the current app is running in debug or not
@@ -57,16 +54,19 @@ extern class Capabilities
 	* the result will be DeviceOrientation.Landscape or DeviceOrientation.Portrait
 	*/
 	public var deviceOrientation(get, null): DeviceOrientation;
+
 	/**
 	* deviceName the device name the application running on
 	* WARNING : this can be null in FLASH or HTML5
 	*/
 	public var deviceName(get, null): String;
+
 	/**
 	* deviceID the device vendor ID the application running on
 	* WARNING : this can be null in FLASH or HTML5
 	*/
 	public var deviceID(get, null): String;
+
 	/**
 	* platform the application running on
 	* result will be  Platform.FLASH , Platform.HTML5, Platform.ANDROID or Platform.IOS

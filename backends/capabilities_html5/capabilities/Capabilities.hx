@@ -87,12 +87,12 @@ class Capabilities
 
 	public function get_builInfo(): BuildInfo
 	{
-		return BuildInfo.getInstance();
+		return BuildInfo.instance();
 	}
 
 	public function get_applicationName(): String
 	{
-		return BuildInfo.getInstance().APPLICATION_NAME;
+		return BuildInfo.instance().APPLICATION_NAME;
 	}
 
 	public function get_deviceName(): String
