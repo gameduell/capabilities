@@ -12,23 +12,24 @@ class Capabilities
 	private static var __os: OS;
 	private function new()
 	{}
-	public var applicationName(get, null): String;
-	public var applicationVersion(get, null): String;
+	public var applicationName(get, never): String;
+	public var applicationVersion(get, never): String;
 
-	public var os(get, null):OS;
-	public var isDebug(get, null): Bool;
+	public var os(get, never): OS;
+	public var isDebug(get, never): Bool;
 
-	public var screenDPI(get, null): Float;
-	public var resolutionX(get, null): Int;
-	public var resolutionY(get, null): Int;
+	public var resolutionX(get, never): Int;
+	public var resolutionY(get, never): Int;
 
-	public var deviceOrientation(get, null): DeviceOrientation;
-	public var deviceName(get, null): String;
-	public var deviceID(get, null): String;
-	public var platform(get, null): Platform;
+	public var deviceOrientation(get, never): DeviceOrientation;
+	public var deviceName(get, never): String;
+	public var deviceID(get, never): String;
+	public var platform(get, never): Platform;
 
-	public var buildInfo(get, null): BuildInfo;
-    public var deviceType(get, null): DeviceType;
+    public var advertisingIdentifier(get, never): String;
+
+	public var buildInfo(get, never): BuildInfo;
+    public var deviceType(get, never): DeviceType;
 
 	public static function instance(): Capabilities
 	{
@@ -61,11 +62,6 @@ class Capabilities
 		return __os;
 	}
 
-	public function get_screenDPI(): Float
-	{
-		return flash.system.Capabilities.screenDPI;
-	}
-
 	public function get_resolutionX(): Int
 	{
 		return Math.ceil(flash.system.Capabilities.screenResolutionX);
@@ -85,6 +81,11 @@ class Capabilities
 	{
 		return null;
 	}
+
+    public function get_advertisingIdentifier(): String
+    {
+        return deviceID;
+    }
 
 	public function get_platform(): Platform
 	{

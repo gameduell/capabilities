@@ -1,49 +1,64 @@
 package capabilities;
+
+import capabilities.Platform;
+import cpp.Lib;
+
 /**
  * @author kgar
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
-import capabilities.Platform;
-import cpp.Lib;
 class Capabilities
 {
-	private static var psInstance: Capabilities;
-	private static var getDeviceOrientationNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceOrientation",0);
-	private static var getDeviceIDNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceID",0);
-	private static var getDeviceNameNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceName",0);
-	private function new()
-	{}
-	public var applicationName(get, null): String;
-	public var applicationVersion(get, null): String;
+    private static var getSystemNameNative = Lib.load("ioscapabilities","ioscapabilities_getSystemName",0);
+    private static var getSystemVersionNative = Lib.load("ioscapabilities","ioscapabilities_getSystemVersion",0);
+    private static var getDeviceOrientationNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceOrientation",0);
+    private static var getDeviceIDNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceID",0);
+    private static var getDeviceNameNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceName",0);
+    private static var getAdvertisingIdentifierNative = Lib.load("ioscapabilities","ioscapabilities_getAdvertisingIdentifier",0);
+    private static var getResolutionXNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionX",0);
+    private static var getResolutionYNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionY",0);
+    private static var isIPhoneNative = Lib.load("ioscapabilities","ioscapabilities_isIPhone",0);
 
-	public var os(get, null):OS;
-	public var isDebug(get, null): Bool;
+	private static var psInstance: Capabilities = null;
 
-	public var screenDPI(get, null): Float;
-	public var resolutionX(get, null): Int;
-	public var resolutionY(get, null): Int;
+	public var applicationName(get, never): String;
+	public var applicationVersion(get, never): String;
 
-	public var deviceOrientation(get, null): DeviceOrientation;
-	public var deviceName(get, null): String;
-	public var deviceID(get, null): String;
-	public var platform(get, null): Platform;
-	public var buildInfo(get, null): BuildInfo;
-    public var deviceType(get, null): DeviceType;
+	public var os(get, never): OS;
+	public var isDebug(get, never): Bool;
 
+	public var resolutionX(get, never): Int;
+	public var resolutionY(get, never): Int;
+
+	public var deviceOrientation(get, never): DeviceOrientation;
+	public var deviceName(get, never): String;
+	public var deviceID(get, never): String;
+    public var advertisingIdentifier(get, never): String;
+	public var platform(get, never): Platform;
+	public var buildInfo(get, never): BuildInfo;
+    public var deviceType(get, never): DeviceType;
+
+    private function new()
+    {}
 
 	public static function instance(): Capabilities
 	{
-		if(psInstance == null)
+		if (psInstance == null)
 		{
 			psInstance = new Capabilities();
 		}
+
 		return psInstance;
 	}
 
 	private function get_isDebug(): Bool
 	{
+    #if debug
+        return true;
+    #else
 		return false;
+    #end
 	}
 
 	private function get_applicationVersion(): String
@@ -53,22 +68,27 @@ class Capabilities
 
 	private function get_os(): OS
 	{
-		return null;
-	}
+        var osName: String = getSystemNameNative();
+        var osVersion: String = getSystemVersionNative();
 
-	private function get_screenDPI(): Float
-	{
-		return 0;
+        var os: OS =
+        {
+            name : osName,
+            version : osVersion,
+            fullName : '$osName $osVersion'
+        };
+
+        return os;
 	}
 
 	private function get_resolutionX(): Int
 	{
-		return 0;
+        return getResolutionXNative();
 	}
 
 	private function get_resolutionY(): Int
 	{
-		return 0;
+        return getResolutionYNative();
 	}
 
 	private function get_deviceOrientation(): DeviceOrientation
@@ -80,6 +100,11 @@ class Capabilities
 	{
 		return getDeviceIDNative();
 	}
+
+    public function get_advertisingIdentifier(): String
+    {
+        return getAdvertisingIdentifierNative();
+    }
 
 	private function get_platform(): Platform
 	{
@@ -103,7 +128,6 @@ class Capabilities
 
     public function get_deviceType(): DeviceType
     {
-        // TODO
-        return DeviceType.UNKNOWN;
+        return isIPhoneNative() ? DeviceType.PHONE : DeviceType.TABLET;
     }
 }
