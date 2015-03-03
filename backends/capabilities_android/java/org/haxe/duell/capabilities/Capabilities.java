@@ -45,6 +45,22 @@ public final class Capabilities
         return DuellActivity.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
+    public static boolean isPhone()
+    {
+        int screenLayout = DuellActivity.getInstance().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        // if the layout is small or normal, it's a phone. tablet otherwise
+        switch (screenLayout)
+        {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
     public static String getAndroidId()
     {
         return Settings.Secure.getString(DuellActivity.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);

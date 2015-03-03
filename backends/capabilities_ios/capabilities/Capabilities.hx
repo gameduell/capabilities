@@ -29,6 +29,7 @@ class Capabilities
 	public var deviceID(get, null): String;
 	public var platform(get, null): Platform;
 	public var buildInfo(get, null): BuildInfo;
+    public var deviceType(get, null): DeviceType;
 
 
 	public static function instance(): Capabilities
@@ -99,4 +100,10 @@ class Capabilities
 	{
 		return getDeviceNameNative();
 	}
+
+    public function get_deviceType(): DeviceType
+    {
+        // TODO
+        return DeviceType.UNKNOWN;
+    }
 }

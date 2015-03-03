@@ -79,6 +79,11 @@ extern class Capabilities
 	*/
 	public var buildInfo(get, null): BuildInfo;
 
+    /**
+        Retrieves the device type (i.e. phone, tablet or browser).
+     */
+    public var deviceType(get, null): DeviceType;
+
 	/**
 	* get the Capabilities instance
 	*/

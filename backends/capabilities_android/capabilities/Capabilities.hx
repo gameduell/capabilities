@@ -26,6 +26,8 @@ class Capabilities
     "getDensityDpi", "()F");
     private static var isLandscapeNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "isLandscape", "()Z");
+    private static var isPhoneNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "isPhone", "()Z");
 
     private static var psInstance: Capabilities;
 
@@ -45,6 +47,7 @@ class Capabilities
 	public var platform(get, null): Platform;
 
 	public var buildInfo(get, null): BuildInfo;
+    public var deviceType(get, null): DeviceType;
 
     private function new()
     {}
@@ -105,7 +108,7 @@ class Capabilities
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-        return isLandscapeNative ? DeviceOrientation.Landscape : DeviceOrientation.Portrait;
+        return isLandscapeNative() ? DeviceOrientation.Landscape : DeviceOrientation.Portrait;
 	}
 
 	public function get_deviceID(): String
@@ -132,4 +135,9 @@ class Capabilities
 	{
 		return getDeviceNameNative();
 	}
+
+    public function get_deviceType(): DeviceType
+    {
+        return isPhoneNative() ? DeviceType.PHONE : DeviceType.TABLET;
+    }
 }

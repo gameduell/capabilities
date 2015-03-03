@@ -28,7 +28,7 @@ class Capabilities
 	public var platform(get, null): Platform;
 
 	public var buildInfo(get, null): BuildInfo;
-
+    public var deviceType(get, null): DeviceType;
 
 	public static function instance(): Capabilities
 	{
@@ -104,4 +104,10 @@ class Capabilities
 	{
 		return null;
 	}
+
+    public function get_deviceType(): DeviceType
+    {
+        // TODO
+        return DeviceType.UNKNOWN;
+    }
 }
