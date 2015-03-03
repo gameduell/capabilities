@@ -4,7 +4,8 @@ package capabilities;
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
-import capabilities.Capabilities.OS;
+import js.Browser;
+import capabilities.Platform;
 class Capabilities
 {
 	private static var instance: Capabilities;
@@ -61,12 +62,12 @@ class Capabilities
 
 	public function get_resolutionX(): Int
 	{
-
+        return Browser.window.screen.availWidth;
 	}
 
 	public function get_resolutionY(): Int
 	{
-
+        return Browser.window.screen.availHeight;
 	}
 
 	public function get_deviceOrientation(): DeviceOrientation
