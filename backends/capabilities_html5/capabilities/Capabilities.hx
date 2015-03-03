@@ -28,7 +28,7 @@ class Capabilities
     public var advertisingIdentifier(get, never): String;
 
     public var deviceType(get, never): DeviceType;
-
+    public var preferredLanguage(get, never): String;
 
 	public static function instance(): Capabilities
 	{
@@ -109,4 +109,9 @@ class Capabilities
         return DeviceType.UNKNOWN;
     }
 
+    public function get_preferredLanguage(): String
+    {
+        // TODO
+        return "EN";
+    }
 }

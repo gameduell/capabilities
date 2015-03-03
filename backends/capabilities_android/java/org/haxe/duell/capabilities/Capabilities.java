@@ -14,6 +14,8 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import org.haxe.duell.DuellActivity;
 
+import java.util.Locale;
+
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public final class Capabilities
 {
@@ -99,6 +101,11 @@ public final class Capabilities
         {
             return String.format("%s %s", capitalize(manufacturer), model);
         }
+    }
+
+    public static String getPreferredLanguage()
+    {
+        return Locale.getDefault().getLanguage();
     }
 
     private static String capitalize(final String s)

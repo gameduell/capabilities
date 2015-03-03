@@ -86,6 +86,11 @@ extern class Capabilities
      */
     public var deviceType(get, never): DeviceType;
 
+    /**
+        Retrieves the user's preferred language in this device.
+     */
+    public var preferredLanguage(get, never): String;
+
 	/**
 	* get the Capabilities instance
 	*/

@@ -127,5 +127,12 @@ static value ioscapabilities_getResolutionY()
 }
 DEFINE_PRIM(ioscapabilities_getResolutionY,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+static value ioscapabilities_getPreferredLanguage()
+{
+    NSString *preferredLanguage = [[NSLocale preferredLanguages] objectAtIndex:0];
+    return alloc_string(preferredLanguage.UTF8String);
+}
+DEFINE_PRIM(ioscapabilities_getPreferredLanguage,0);
+///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 extern "C" int ioscapabilities_register_prims () { return 0; }

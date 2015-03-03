@@ -26,6 +26,8 @@ class Capabilities
     "isLandscape", "()Z");
     private static var isPhoneNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "isPhone", "()Z");
+    private static var getPreferredLanguageNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "getPreferredLanguage", "()Ljava/lang/String;");
 
     private static var psInstance: Capabilities;
 
@@ -47,6 +49,8 @@ class Capabilities
 
 	public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
+
+    public var preferredLanguage(get, never): String;
 
     private function new()
     {}
@@ -138,5 +142,10 @@ class Capabilities
     public function get_deviceType(): DeviceType
     {
         return isPhoneNative() ? DeviceType.PHONE : DeviceType.TABLET;
+    }
+
+    public function get_preferredLanguage(): String
+    {
+        return getPreferredLanguageNative();
     }
 }

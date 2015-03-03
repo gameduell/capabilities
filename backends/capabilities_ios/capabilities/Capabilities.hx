@@ -18,6 +18,7 @@ class Capabilities
     private static var getAdvertisingIdentifierNative = Lib.load("ioscapabilities","ioscapabilities_getAdvertisingIdentifier",0);
     private static var getResolutionXNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionX",0);
     private static var getResolutionYNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionY",0);
+    private static var getPreferredLanguageNative = Lib.load("ioscapabilities","ioscapabilities_getPreferredLanguage",0);
     private static var isIPhoneNative = Lib.load("ioscapabilities","ioscapabilities_isIPhone",0);
 
 	private static var psInstance: Capabilities = null;
@@ -38,6 +39,7 @@ class Capabilities
 	public var platform(get, never): Platform;
 	public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
+    public var preferredLanguage(get, never): String;
 
     private function new()
     {}
@@ -129,5 +131,10 @@ class Capabilities
     public function get_deviceType(): DeviceType
     {
         return isIPhoneNative() ? DeviceType.PHONE : DeviceType.TABLET;
+    }
+
+    public function get_preferredLanguage(): String
+    {
+        return getPreferredLanguageNative();
     }
 }

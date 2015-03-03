@@ -30,6 +30,7 @@ class Capabilities
 
 	public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
+    public var preferredLanguage(get, never): String;
 
 	public static function instance(): Capabilities
 	{
@@ -110,5 +111,11 @@ class Capabilities
     {
         // TODO
         return DeviceType.UNKNOWN;
+    }
+
+    public function get_preferredLanguage(): String
+    {
+        // TODO
+        return "EN";
     }
 }
