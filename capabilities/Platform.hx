@@ -4,11 +4,14 @@
  * Copyright (c) 2014 GameDuell GmbH
  */
 package capabilities;
-typedef OS = {
-name: String,
-version: String,
-fullName: String
+
+typedef OS =
+{
+    name: String,
+    version: String,
+    fullName: String
 }
+
 enum Platform
 {
     HTML5;

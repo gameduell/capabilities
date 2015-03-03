@@ -7,48 +7,123 @@
 
 package org.haxe.duell.capabilities;
 
-public class Capabilities
+import android.annotation.TargetApi;
+import android.content.res.Configuration;
+import android.os.Build;
+import android.provider.Settings;
+import android.util.DisplayMetrics;
+import org.haxe.duell.DuellActivity;
+
+import java.util.Locale;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+public final class Capabilities
 {
-    private static final String TAG = Capabilities.class.getSimpleName();
-    private org.haxe.duell.hxjni.HaxeObject haxeObject;
-    private org.haxe.duell.capabilities.events.CentralHaxeDispatcher dispatcher;
-
-    public static Capabilities create(org.haxe.duell.hxjni.HaxeObject object)
+    private Capabilities()
     {
-        return new Capabilities(object);
+        // can't be instantiated
     }
 
-    private Capabilities(org.haxe.duell.hxjni.HaxeObject object)
+    public static int getResolutionX()
     {
-        haxeObject = object;
-        dispatcher = new org.haxe.duell.capabilities.events.CentralHaxeDispatcher(haxeObject);
+        DisplayMetrics metrics = DuellActivity.getInstance().getResources().getDisplayMetrics();
+        return metrics.widthPixels;
     }
 
-    public String getDeviceName()
+    public static int getResolutionY()
     {
-        return android.os.Build.MODEL;
+        DisplayMetrics metrics = DuellActivity.getInstance().getResources().getDisplayMetrics();
+        return metrics.heightPixels;
     }
 
-    public String getDeviceID()
+    public static float getDensityDpi()
     {
-        String m_szDevIDShort = "35" + (Build.BOARD.length() % 10) + (Build.BRAND.length() % 10) +
-                                (Build.CPU_ABI.length() % 10) + (Build.DEVICE.length() % 10) +
-                                (Build.MANUFACTURER.length() % 10) + (Build.MODEL.length() % 10) +
-                                (Build.PRODUCT.length() % 10);
-        String serial = null;
-        try
+        DisplayMetrics metrics = DuellActivity.getInstance().getResources().getDisplayMetrics();
+        return metrics.densityDpi;
+    }
+
+    public static boolean isLandscape()
+    {
+        return DuellActivity.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    public static boolean isPhone()
+    {
+        int screenLayout = DuellActivity.getInstance().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        // if the layout is small or normal, it's a phone. tablet otherwise
+        switch (screenLayout)
         {
-            serial = android.os.Build.class.getField("SERIAL").get(null).toString();
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return true;
 
-            // Go ahead and return the serial for api => 9
-            return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+            default:
+                return false;
         }
-        catch (Exception exception)
+    }
+
+    public static String getAndroidId()
+    {
+        return Settings.Secure.getString(DuellActivity.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    public static String getSerial()
+    {
+        return Build.SERIAL;
+    }
+
+    /**
+     * Retrieves the Android system version, under the RELEASE flag.
+     *
+     * @return the user-visible Android system version name
+     */
+    public static String getSystemVersion()
+    {
+        return Build.VERSION.RELEASE;
+    }
+
+    /**
+     * Retrieves the device name, with manufacturer and model.
+     *
+     * @return the pretty-print of the device name
+     */
+    public static String getDeviceName()
+    {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+
+        if (model.startsWith(manufacturer))
         {
-            // String needs to be initialized
-            serial = "serial"; // some value
+            return capitalize(model);
+        }
+        else
+        {
+            return String.format("%s %s", capitalize(manufacturer), model);
+        }
+    }
+
+    public static String getPreferredLanguage()
+    {
+        return Locale.getDefault().getLanguage();
+    }
+
+    private static String capitalize(final String s)
+    {
+        if (s == null || s.length() == 0)
+        {
+            return "";
         }
 
-        return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+        char first = s.charAt(0);
+
+        if (Character.isUpperCase(first))
+        {
+            return s;
+        }
+        else
+        {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
     }
 }

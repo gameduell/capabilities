@@ -7,7 +7,6 @@ package capabilities;
 import js.Browser;
 import js.Cookie;
 import capabilities.Platform;
-
 typedef OSData = {
 os: String,
 osVersion: String,
@@ -35,9 +34,14 @@ class Capabilities
     public var deviceName(get, null): String;
     public var deviceID(get, null): String;
     public var platform(get, null): Platform;
+    public var advertisingIdentifier(get, never): String;
+
+    public var deviceType(get, never): DeviceType;
+    public var preferredLanguage(get, never): String;
 
     private var uniqueID: String;
     private static inline var KEY: String = "persistant_capabilities_visitor_id";
+
     public static function instance(): Capabilities
     {
         if (instance == null)
@@ -76,8 +80,9 @@ class Capabilities
 
     }
 
-    public function get_resolutionX(): Int
-    {
+    
+	public function get_resolutionX(): Int
+	{
         return Browser.window.screen.availWidth;
     }
 
@@ -227,5 +232,52 @@ class Capabilities
             return Cookie.get(KEY);
         }
         return null;
+	}
+
+	public function get_deviceOrientation(): DeviceOrientation
+	{
+
+	}
+
+	public function get_deviceID(): String
+	{
+
+	}
+
+    public function get_advertisingIdentifier(): String
+    {
+        return deviceID;
+    }
+
+	public function get_platform(): Platform
+	{
+		return Platform.HTML5;
+	}
+
+	public function get_builInfo(): BuildInfo
+	{
+		return BuildInfo.instance();
+	}
+
+	public function get_applicationName(): String
+	{
+		return BuildInfo.instance().APPLICATION_NAME;
+	}
+
+	public function get_deviceName(): String
+	{
+		return null;
+	}
+
+    public function get_deviceType(): DeviceType
+    {
+        // TODO
+        return DeviceType.UNKNOWN;
+    }
+
+    public function get_preferredLanguage(): String
+    {
+        // TODO
+        return "EN";
     }
 }
