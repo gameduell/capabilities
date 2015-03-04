@@ -11,6 +11,13 @@
     <duelllib name="unittest" version="2.0.0+" />
 
     <platform-config>
+        <ios>
+            <orientation value="UIInterfaceOrientationPortrait" />
+        </ios>
+
+        <android>
+            <activity-parameter name="screenOrientation" value="portrait" />
+        </android>
     </platform-config>
 
 </project>

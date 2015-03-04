@@ -4,22 +4,23 @@ package capabilities;
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
+import preferences.Editor;
+import preferences.Preferences;
 import Math;
 import capabilities.Platform;
-import flash.net.SharedObject;
+
 class Capabilities
 {
+    private static inline var KEY: String = "capabilities_visitor_id";
+
 	private static var psInstance: Capabilities;
-	private static var __os: OS;
+
 	private var uniqID: String;
-	private var __sharedObject:SharedObject;
-	private static inline var KEY:String = "capabilities_visitor_id";
-	private function new()
-	{}
+
 	public var applicationName(get, never): String;
 	public var applicationVersion(get, never): String;
 
-	public var os(get, never): OS;
+	@:isVar public var os(get, null): OS;
 	public var isDebug(get, never): Bool;
 
 	public var resolutionX(get, never): Int;
@@ -36,16 +37,20 @@ class Capabilities
     public var deviceType(get, never): DeviceType;
     public var preferredLanguage(get, never): String;
 
-
 	public static function instance(): Capabilities
 	{
-		if(psInstance == null)
+		if (psInstance == null)
 		{
 			psInstance = new Capabilities();
-			psInstance.generateUID();
 		}
+
 		return psInstance;
 	}
+
+    private function new()
+    {
+        generateUID();
+    }
 
 	public function get_isDebug(): Bool
 	{
@@ -59,17 +64,19 @@ class Capabilities
 
 	public function get_os(): OS
 	{
-		var pattern = ~/[^0-9.]+/;//get only digits out of a string
-		if(__os == null)
+		var pattern = ~/[^0-9.]+/; //get only digits out of a string
+
+		if (os == null)
 		{
-            __os =
+            os =
             {
 			    name : flash.system.Capabilities.os,
 			    version : pattern.split(flash.system.Capabilities.os)[1],
                 fullName : flash.system.Capabilities.os
             };
 		}
-		return __os;
+
+		return os;
 	}
 
 	public function get_resolutionX(): Int
@@ -101,6 +108,7 @@ class Capabilities
 	{
 		return Platform.FLASH;
 	}
+
 	public function get_buildInfo(): BuildInfo
 	{
 		return BuildInfo.instance();
@@ -128,32 +136,20 @@ class Capabilities
 
     private function generateUID(): Void
     {
-        uniqID = guid();
-        storeUID(uniqID);
-    }
-    private function storeUID(uniqID: String):Void
-    {
-        __sharedObject = SharedObject.getLocal(KEY);
-        if (!Reflect.hasField(__sharedObject.data, "uid"))
+        uniqID = Preferences.getString(KEY);
+
+        if (uniqID == null)
         {
-        	untyped __sharedObject.data.uid = uniqID;
-        	try 
-        	{
-                __sharedObject.flush(10000);
-            } 
-            catch (error:Dynamic) 
-            {
-                trace("Error...Could not write SharedObject to disk\n");
-            }
+            uniqID = guid();
+
+            var editor: Editor = Preferences.getEditor();
+            editor.putString(KEY, uniqID);
+            editor.synchronize();
         }
     }
-    private function guid() 
+
+    private function guid(): String
     {
-    	__sharedObject = SharedObject.getLocal(KEY);
-    	if (Reflect.hasField(__sharedObject.data, "uid"))
-        {
-        	return __sharedObject.data.uid ;
-        }
         inline function s4(): String
         {
             return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);

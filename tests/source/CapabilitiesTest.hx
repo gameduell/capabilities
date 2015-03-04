@@ -7,12 +7,15 @@ import capabilities.DeviceOrientation;
 import capabilities.Platform;
 import capabilities.BuildInfo;
 import capabilities.Capabilities;
+
 class CapabilitiesTest extends unittest.TestCase
 {
 	public function testBuildInfo(): Void
 	{
-		var buildInfo: BuildInfo =  Capabilities.instance().buildInfo;
-		assertTrue(buildInfo != null);
+		var buildInfo: BuildInfo = Capabilities.instance().buildInfo;
+
+        assertTrue(buildInfo != null);
+
 		assertEquals(buildInfo.APPLICATION_NAME,"Capabilities App");
 		assertEquals(buildInfo.APPLICATION_BUNDLE, "com.gameduell.tests.capabilities");
 		assertEquals(buildInfo.COMPANY_NAME, "GameDuell GmbH");
@@ -21,44 +24,36 @@ class CapabilitiesTest extends unittest.TestCase
 
 	public function testPlatform(): Void
 	{
-		#if flash
-			assertEquals(Capabilities.instance().platform, Platform.FLASH);
-		#elseif ios
-			assertEquals(Capabilities.instance().platform, Platform.IOS);
-		#elseif android
-			assertEquals(Capabilities.instance().platform, Platform.ANDROID);
-		#elseif html5
-			assertEquals(Capabilities.instance().platform, Platform.HTML5);
-		#end
+    #if flash
+        assertEquals(Capabilities.instance().platform, Platform.FLASH);
+    #elseif ios
+        assertEquals(Capabilities.instance().platform, Platform.IOS);
+    #elseif android
+        assertEquals(Capabilities.instance().platform, Platform.ANDROID);
+    #elseif html5
+        assertEquals(Capabilities.instance().platform, Platform.HTML5);
+    #end
 	}
 
     public function testDeviceID(): Void
     {
-
-        #if ios
-             assertTrue(Capabilities.instance().deviceID != null);
-        #else
-            assertTrue(true);
-        #end
-
+        assertTrue(Capabilities.instance().deviceID != null);
     }
+
     public function testDeviceName(): Void
     {
-
-        #if ios
-             assertTrue(Capabilities.instance().deviceName != null);
-        #else
-            assertTrue(true);
-        #end
-
+        assertTrue(Capabilities.instance().deviceName != null);
     }
+
 	public function testDeviceOrientation(): Void
 	{
-		#if ios
+    #if ios
 		assertEquals(Capabilities.instance().deviceOrientation, DeviceOrientation.Portrait);
-		#else
-		assertTrue(true);
-		#end
+    #elseif android
+        assertEquals(Capabilities.instance().deviceOrientation, DeviceOrientation.Portrait);
+    #else
+        assertEquals(Capabilities.instance().deviceOrientation, DeviceOrientation.Unknown);
+    #end
 	}
 	
 }

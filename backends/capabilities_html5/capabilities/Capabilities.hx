@@ -4,36 +4,40 @@ package capabilities;
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
+import preferences.Editor;
+import preferences.Preferences;
 import js.Browser;
-import js.Cookie;
 import capabilities.Platform;
-typedef OSData = {
-os: String,
-osVersion: String,
+
+typedef OSData =
+{
+    os: String,
+    osVersion: String,
 };
-typedef BrowserData={
+
+typedef BrowserData =
+{
     name: String,
     fullVersion: String,
     majorVersion: String,
     userAgent : String
 };
-enum PersistanceMethod {Cookie;LocalStorage;}
 
 class Capabilities
 {
+    private static inline var KEY: String = "capabilities_visitor_id";
+
     private static var psInstance: Capabilities;
 
     private var osData: OSData;
     private var browserData:BrowserData;
-    private function new()
-    {}
+
     public var applicationName(get, null): String;
     public var applicationVersion(get, null): String;
 
     public var os(get, null): OS;
     public var isDebug(get, null): Bool;
 
-    public var screenDPI(get, null): Float;
     public var resolutionX(get, null): Int;
     public var resolutionY(get, null): Int;
 
@@ -43,32 +47,36 @@ class Capabilities
     public var platform(get, null): Platform;
     public var advertisingIdentifier(get, never): String;
 
+    public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
     public var preferredLanguage(get, never): String;
 
     private var uniqueID: String;
-    private static inline var KEY: String = "capabilities_visitor_id";
 
     public static function instance(): Capabilities
     {
         if (psInstance == null)
         {
             psInstance = new Capabilities();
-            psInstance.parseOS();
-            psInstance.generateAndStoreUniqueID();
-            psInstance.parBrowserData();
         }
+
         return psInstance;
+    }
+
+    private function new()
+    {
+        parseOS();
+        generateAndStoreUniqueID();
+        parseBrowserData();
     }
 
     public function get_isDebug(): Bool
     {
+    #if debug
+        return true;
+    #else
         return false;
-    }
-
-    public function get_applicatonName(): String
-    {
-       return BuildInfo.instance().APPLICATION_NAME;
+    #end
     }
 
     public function get_applicationVersion(): String
@@ -78,17 +86,14 @@ class Capabilities
 
     public function get_os(): OS
     {
-        var os:OS = {
+        var os:OS =
+        {
             name: osData.os,
             fullName: osData.os,
             version:  osData.osVersion
         };
-        return os;
-    }
 
-    public function get_screenDPI(): Float
-    {
-        return 120.0;
+        return os;
     }
 
 	public function get_resolutionX(): Int
@@ -103,134 +108,148 @@ class Capabilities
 
     public function get_deviceID(): String
     {
-
         return uniqueID;
-    }
-
-
-    public function get_builInfo(): BuildInfo
-    {
-        return BuildInfo.instance();
     }
 
     private function generateAndStoreUniqueID(): Void
     {
-        var method = allowsThirdPartyCookies() ? PersistanceMethod.Cookie : PersistanceMethod.LocalStorage;
-        uniqueID = grabUID(method);
-        if(uniqueID == null)
+        uniqueID = Preferences.getString(KEY);
+
+        if (uniqueID == null)
         {
             uniqueID = guid();
-            sotreUID(method, uniqueID);
+
+            var editor: Editor = Preferences.getEditor();
+            editor.putString(KEY, uniqueID);
+            editor.synchronize();
         }
     }
-    private function parBrowserData(): Void
+
+    private function parseBrowserData(): Void
     {
         var nVer = Browser.navigator.appVersion;
         var nAgt = Browser.navigator.userAgent;
         var browserName  = Browser.navigator.appName;
-        var fullVersion  = ''+Std.parseFloat(Browser.navigator.appVersion); 
-        var majorVersion = untyped parseInt(Browser.navigator.appVersion,10);
-        var nameOffset,verOffset,ix;
+        var fullVersion  = '' + Std.parseFloat(Browser.navigator.appVersion);
+        var majorVersion = untyped parseInt(Browser.navigator.appVersion, 10);
+        var nameOffset, verOffset, ix;
+
         // In Opera, the true version is after "Opera" or after "Version"
-        if ((verOffset=nAgt.indexOf("Opera"))!=-1) 
+        if ((verOffset=nAgt.indexOf("Opera")) != -1)
         {
-           browserName = "Opera";
-           fullVersion = nAgt.substring(verOffset+6);
-           if ((verOffset=nAgt.indexOf("Version"))!=-1) 
-             fullVersion = nAgt.substring(verOffset+8);
+            browserName = "Opera";
+            fullVersion = nAgt.substring(verOffset + 6);
+            if ((verOffset = nAgt.indexOf("Version")) != -1)
+            {
+                fullVersion = nAgt.substring(verOffset + 8);
+            }
         }
         // In MSIE, the true version is after "MSIE" in userAgent
-        else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) 
+        else if ((verOffset=nAgt.indexOf("MSIE")) != -1)
         {
-           browserName = "Microsoft Internet Explorer";
-           fullVersion = nAgt.substring(verOffset+5);
+            browserName = "Microsoft Internet Explorer";
+            fullVersion = nAgt.substring(verOffset + 5);
         }
         // In Chrome, the true version is after "Chrome" 
-        else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) 
+        else if ((verOffset = nAgt.indexOf("Chrome")) != -1)
         {
-           browserName = "Chrome";
-           fullVersion = nAgt.substring(verOffset+7);
+            browserName = "Chrome";
+            fullVersion = nAgt.substring(verOffset + 7);
         }
         // In Safari, the true version is after "Safari" or after "Version" 
-        else if ((verOffset=nAgt.indexOf("Safari"))!=-1) 
+        else if ((verOffset = nAgt.indexOf("Safari")) != -1)
         {
-           browserName = "Safari";
-           fullVersion = nAgt.substring(verOffset+7);
-           if ((verOffset=nAgt.indexOf("Version"))!=-1) 
-             fullVersion = nAgt.substring(verOffset+8);
+            browserName = "Safari";
+            fullVersion = nAgt.substring(verOffset + 7);
+            if ((verOffset = nAgt.indexOf("Version")) != -1)
+            {
+                fullVersion = nAgt.substring(verOffset + 8);
+            }
         }
         // In Firefox, the true version is after "Firefox" 
-        else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) 
+        else if ((verOffset = nAgt.indexOf("Firefox")) != -1)
         {
             browserName = "Firefox";
             fullVersion = nAgt.substring(verOffset+8);
         }
         // In most other browsers, "name/version" is at the end of userAgent 
-        else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < (verOffset=nAgt.lastIndexOf('/')) ) 
+        else if ( (nameOffset=nAgt.lastIndexOf(' ') + 1) < (verOffset = nAgt.lastIndexOf('/')) )
         {
             browserName = nAgt.substring(nameOffset,verOffset);
-            fullVersion = nAgt.substring(verOffset+1);
-            if (browserName.toLowerCase()==browserName.toUpperCase()) 
+            fullVersion = nAgt.substring(verOffset + 1);
+
+            if (browserName.toLowerCase() == browserName.toUpperCase())
             {
                browserName = Browser.navigator.appName;
             }
         }
         // trim the fullVersion string at semicolon/space if present
-        if ((ix=fullVersion.indexOf(";"))!=-1)
-            fullVersion=fullVersion.substring(0,ix);
-        if ((ix=fullVersion.indexOf(" "))!=-1)
-            fullVersion=fullVersion.substring(0,ix);
+        if ((ix = fullVersion.indexOf(";")) != -1)
+        {
+            fullVersion=fullVersion.substring(0, ix);
+        }
 
-        majorVersion = untyped parseInt(''+fullVersion,10);
+        if ((ix = fullVersion.indexOf(" ")) != -1)
+        {
+            fullVersion = fullVersion.substring(0, ix);
+        }
+
+        majorVersion = untyped parseInt(''+fullVersion, 10);
         if (untyped isNaN(majorVersion)) 
         {
             fullVersion  = ''+Std.parseFloat(Browser.navigator.appVersion); 
-            majorVersion = untyped parseInt(Browser.navigator.appVersion,10);
+            majorVersion = untyped parseInt(Browser.navigator.appVersion, 10);
         }
-        browserData = {
-                        name: browserName,
-                        fullVersion: fullVersion,
-                        majorVersion: majorVersion,
-                        userAgent : Browser.navigator.userAgent
-                    };
 
+        browserData =
+        {
+            name: browserName,
+            fullVersion: fullVersion,
+            majorVersion: majorVersion,
+            userAgent : Browser.navigator.userAgent
+        };
     }
+
     private function parseOS(): Void
     {
         var nAgt = Browser.navigator.userAgent;
         var nVer = Browser.navigator.appVersion;
         // system
         var os = "unknown";
-        var clientStrings = [
-        {s:'Windows 3.11', r:~/Win16/},
-        {s:'Windows 95', r:~/(Windows 95|Win95|Windows_95)/},
-        {s:'Windows ME', r:~/(Win 9x 4.90|Windows ME)/},
-        {s:'Windows 98', r:~/(Windows 98|Win98)/},
-        {s:'Windows CE', r:~/Windows CE/},
-        {s:'Windows 2000', r:~/(Windows NT 5.0|Windows 2000)/},
-        {s:'Windows XP', r:~/(Windows NT 5.1|Windows XP)/},
-        {s:'Windows Server 2003', r:~/Windows NT 5.2/},
-        {s:'Windows Vista', r:~/Windows NT 6.0/},
-        {s:'Windows 7', r:~/(Windows 7|Windows NT 6.1)/},
-        {s:'Windows 8.1', r:~/(Windows 8.1|Windows NT 6.3)/},
-        {s:'Windows 8', r:~/(Windows 8|Windows NT 6.2)/},
-        {s:'Windows NT 4.0', r:~/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
-        {s:'Windows ME', r:~/Windows ME/},
-        {s:'Android', r:~/Android/},
-        {s:'Open BSD', r:~/OpenBSD/},
-        {s:'Sun OS', r:~/SunOS/},
-        {s:'Linux', r:~/(Linux|X11)/},
-        {s:'iOS', r:~/(iPhone|iPad|iPod)/},
-        {s:'Mac OS X', r:~/Mac OS X/},
-        {s:'Mac OS', r:~/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
-        {s:'QNX', r:~/QNX/},
-        {s:'UNIX', r:~/UNIX/},
-        {s:'BeOS', r:~/BeOS/},
-        {s:'OS/2', r:~/OS\/2/},
-        {s:'Search Bot', r:~/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
+        var clientStrings =
+        [
+            {s:'Windows 3.11', r:~/Win16/},
+            {s:'Windows 95', r:~/(Windows 95|Win95|Windows_95)/},
+            {s:'Windows ME', r:~/(Win 9x 4.90|Windows ME)/},
+            {s:'Windows 98', r:~/(Windows 98|Win98)/},
+            {s:'Windows CE', r:~/Windows CE/},
+            {s:'Windows 2000', r:~/(Windows NT 5.0|Windows 2000)/},
+            {s:'Windows XP', r:~/(Windows NT 5.1|Windows XP)/},
+            {s:'Windows Server 2003', r:~/Windows NT 5.2/},
+            {s:'Windows Vista', r:~/Windows NT 6.0/},
+            {s:'Windows 7', r:~/(Windows 7|Windows NT 6.1)/},
+            {s:'Windows 8.1', r:~/(Windows 8.1|Windows NT 6.3)/},
+            {s:'Windows 8', r:~/(Windows 8|Windows NT 6.2)/},
+            {s:'Windows NT 4.0', r:~/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
+            {s:'Windows ME', r:~/Windows ME/},
+            {s:'Android', r:~/Android/},
+            {s:'Open BSD', r:~/OpenBSD/},
+            {s:'Sun OS', r:~/SunOS/},
+            {s:'Linux', r:~/(Linux|X11)/},
+            {s:'iOS', r:~/(iPhone|iPad|iPod)/},
+            {s:'Mac OS X', r:~/Mac OS X/},
+            {s:'Mac OS', r:~/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
+            {s:'QNX', r:~/QNX/},
+            {s:'UNIX', r:~/UNIX/},
+            {s:'BeOS', r:~/BeOS/},
+            {s:'OS/2', r:~/OS\/2/},
+            {s:'Search Bot', r:~/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
         ];
-        for (client in clientStrings) {
-            if (client.r.match(nAgt)) {
+
+        for (client in clientStrings)
+        {
+            if (client.r.match(nAgt))
+            {
                 os = client.s;
                 break;
             }
@@ -238,12 +257,14 @@ class Capabilities
 
         var osVersion = "unknown";
 
-        if (~/Windows/.match(os)) {
+        if (~/Windows/.match(os))
+        {
             osVersion = ~/Windows (.*)/.split(os)[1];
             os = 'Windows';
         }
 
-        switch (os) {
+        switch (os)
+        {
             case 'Mac OS X':
                 osVersion = ~/Mac OS X (10[._\d]+)/.split(nAgt)[1];
             case 'Android':
@@ -251,15 +272,11 @@ class Capabilities
             case 'iOS':
                 var osVersionArray = ~/OS (\d+)_(\d+)_?(\d+)?/.split(nVer);
                 osVersion = osVersionArray[1] + '.' + osVersionArray[2] + '.' + "x";
-
         }
-        osData = {os: os, osVersion:osVersion};
-    }
-    private function allowsThirdPartyCookies() {
-        var re = ~/Version\/\d+.\d+(\.\d+)?.*Safari/;
 
-        return !re.match(Browser.navigator.userAgent);
+        osData = { os : os, osVersion : osVersion };
     }
+
     private function guid(): String 
     {
         inline function s4(): String
@@ -270,39 +287,6 @@ class Capabilities
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                s4() + '-' + s4() + s4() + s4();
     }
-
-    private function sotreUID(storeType: PersistanceMethod, uid: String):Void
-    {
-        if(storeType == PersistanceMethod.LocalStorage)
-        {
-            var store = Browser.getLocalStorage();
-            if(store != null)
-            {
-                store.setItem(KEY, uid);
-            }
-        }
-        else if(storeType == PersistanceMethod.Cookie)
-        {
-            js.Cookie.set(KEY, uid);
-        }
-    }
-    private function grabUID(storeType: PersistanceMethod): String
-    {
-        if(storeType == PersistanceMethod.LocalStorage)
-        {
-            var store = Browser.getLocalStorage();
-            if(store != null)
-            {
-               return store.getItem(KEY);
-            }
-            return null;
-        }
-        else if(storeType == PersistanceMethod.Cookie)
-        {
-            return js.Cookie.get(KEY);
-        }
-        return null;
-	}
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
@@ -318,6 +302,11 @@ class Capabilities
 	{
 		return Platform.HTML5;
 	}
+
+    public function get_buildInfo(): BuildInfo
+    {
+        return BuildInfo.instance();
+    }
 
 	public function get_applicationName(): String
 	{
