@@ -257,12 +257,14 @@ class Capabilities
     }
     private function guid(): String 
     {
-        function s4() {
+        inline function s4() {
           return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
         };
      
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-               s4() + '-' + s4() + s4() + s4    }
+               s4() + '-' + s4() + s4() + s4();
+    }
+
     private function sotreUID(storeType: PersistanceMethod, uid: String):Void
     {
         if(storeType == PersistanceMethod.LocalStorage)
