@@ -55,6 +55,7 @@ class Capabilities
         {
             psInstance = new Capabilities();
             psInstance.parseOS();
+            psInstance.generateAndStoreUniqueID();
             psInstance.parBrowserData();
         }
         return psInstance;
@@ -261,8 +262,7 @@ class Capabilities
         };
      
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-               s4() + '-' + s4() + s4() + s4();
-    }
+               s4() + '-' + s4() + s4() + s4    }
     private function sotreUID(storeType: PersistanceMethod, uid: String):Void
     {
         if(storeType == PersistanceMethod.LocalStorage)
