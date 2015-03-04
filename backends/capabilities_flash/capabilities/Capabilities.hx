@@ -60,11 +60,14 @@ class Capabilities
 	public function get_os(): OS
 	{
 		var pattern = ~/[^0-9.]+/;//get only digits out of a string
-		if(__os.name == null)
+		if(__os == null)
 		{
-			__os.name = flash.system.Capabilities.os;
-			__os.fullName = flash.system.Capabilities.os;
-			__os.version = pattern.split(flash.system.Capabilities.os)[1];
+            __os =
+            {
+			    name : flash.system.Capabilities.os,
+			    version : pattern.split(flash.system.Capabilities.os)[1],
+                fullName : flash.system.Capabilities.os
+            };
 		}
 		return __os;
 	}
@@ -131,7 +134,7 @@ class Capabilities
     private function storeUID(uniqID: String):Void
     {
         __sharedObject = SharedObject.getLocal(KEY);
-        if(untyped __sharedObject.data.uid == undefined)
+        if (untyped __sharedObject.data.uid)
         {
         	__sharedObject.data.uid = uniqID;
         	try 
