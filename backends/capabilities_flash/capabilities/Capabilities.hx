@@ -13,7 +13,7 @@ class Capabilities
 	private static var __os: OS;
 	private var uniqID: String;
 	private var __sharedObject:SharedObject;
-	private static inline var KEY:String = "flash_persistant_capabilities_visitor_id";
+	private static inline var KEY:String = "capabilities_visitor_id";
 	private function new()
 	{}
 	public var applicationName(get, never): String;
@@ -149,6 +149,11 @@ class Capabilities
     }
     private function guid() 
     {
+    	__sharedObject = SharedObject.getLocal(KEY);
+    	if (Reflect.hasField(__sharedObject.data, "uid"))
+        {
+        	return __sharedObject.data.uid ;
+        }
         inline function s4(): String
         {
             return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
