@@ -47,7 +47,7 @@ class Capabilities
     public var preferredLanguage(get, never): String;
 
     private var uniqueID: String;
-    private static inline var KEY: String = "persistant_capabilities_visitor_id";
+    private static inline var KEY: String = "capabilities_visitor_id";
 
     public static function instance(): Capabilities
     {
@@ -103,6 +103,7 @@ class Capabilities
 
     public function get_deviceID(): String
     {
+
         return uniqueID;
     }
 
@@ -115,8 +116,12 @@ class Capabilities
     private function generateAndStoreUniqueID(): Void
     {
         var method = allowsThirdPartyCookies() ? PersistanceMethod.Cookie : PersistanceMethod.LocalStorage;
-        uniqueID = guid();
-        sotreUID(method, uniqueID);
+        uniqueID = grabUID(method);
+        if(uniqueID == null)
+        {
+            uniqueID = guid();
+            sotreUID(method, uniqueID);
+        }
     }
     private function parBrowserData(): Void
     {
@@ -278,10 +283,10 @@ class Capabilities
         }
         else if(storeType == PersistanceMethod.Cookie)
         {
-            js.Cookie.set(KEY, uid, 7);
+            js.Cookie.set(KEY, uid);
         }
     }
-    private function grabUID(storeType: PersistanceMethod):String
+    private function grabUID(storeType: PersistanceMethod): String
     {
         if(storeType == PersistanceMethod.LocalStorage)
         {
