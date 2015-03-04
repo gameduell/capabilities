@@ -9,4 +9,5 @@ enum DeviceOrientation
 {
     Landscape;
     Portrait;
+    Unknown;
 }

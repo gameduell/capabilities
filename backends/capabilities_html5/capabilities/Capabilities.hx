@@ -11,6 +11,12 @@ typedef OSData = {
 os: String,
 osVersion: String,
 };
+typedef BrowserData={
+    name: String,
+    fullVersion: String,
+    majorVersion: String,
+    userAgent : String
+};
 enum PersistanceMethod = {Cookie;LocalStorage;};
 
 class Capabilities
@@ -18,6 +24,7 @@ class Capabilities
     private static var instance: Capabilities;
 
     private var osData: OSData;
+    private var browserData:BrowserData;
     private function new()
     {}
     public var applicationName(get, null): String;
@@ -48,18 +55,19 @@ class Capabilities
         {
             instance = new Capabilities();
             parseOS();
+            parBrowserData();
         }
         return instance;
     }
 
     public function get_isDebug(): Bool
     {
-
+        return false;
     }
 
     public function get_applicatonName(): String
     {
-
+       return BuildInfo.getInstance().APPLICATION_NAME;
     }
 
     public function get_applicationVersion(): String
@@ -77,10 +85,9 @@ class Capabilities
 
     public function get_screenDPI(): Float
     {
-
+        return 120.0;
     }
 
-    
 	public function get_resolutionX(): Int
 	{
         return Browser.window.screen.availWidth;
@@ -89,11 +96,6 @@ class Capabilities
     public function get_resolutionY(): Int
     {
         return Browser.window.screen.availHeight;
-    }
-
-    public function get_deviceOrientation(): DeviceOrientation
-    {
-
     }
 
     public function get_deviceID(): String
@@ -116,16 +118,83 @@ class Capabilities
         return BuildInfo.getInstance().APPLICATION_NAME;
     }
 
-    public function get_deviceName(): String
-    {
-        return null;
-    }
-
     private function generateAndStoreUniqueID(): Void
     {
         var method = allowsThirdPartyCookies() ? PersistanceMethod.Cookie : PersistanceMethod.LocalStorage;
         uniqueID = guid();
         sotreUID(method, uniqueID);
+    }
+    private function parBrowserData(): Void
+    {
+        var nVer = Browser.navigator.appVersion;
+        var nAgt = Browser.navigator.userAgent;
+        var browserName  = Browser.navigator.appName;
+        var fullVersion  = ''+Std.parseFloat(Browser.navigator.appVersion); 
+        var majorVersion = untyped parseInt(Browser.navigator.appVersion,10);
+        var nameOffset,verOffset,ix;
+        // In Opera, the true version is after "Opera" or after "Version"
+        if ((verOffset=nAgt.indexOf("Opera"))!=-1) 
+        {
+           browserName = "Opera";
+           fullVersion = nAgt.substring(verOffset+6);
+           if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+             fullVersion = nAgt.substring(verOffset+8);
+        }
+        // In MSIE, the true version is after "MSIE" in userAgent
+        else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) 
+        {
+           browserName = "Microsoft Internet Explorer";
+           fullVersion = nAgt.substring(verOffset+5);
+        }
+        // In Chrome, the true version is after "Chrome" 
+        else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) 
+        {
+           browserName = "Chrome";
+           fullVersion = nAgt.substring(verOffset+7);
+        }
+        // In Safari, the true version is after "Safari" or after "Version" 
+        else if ((verOffset=nAgt.indexOf("Safari"))!=-1) 
+        {
+           browserName = "Safari";
+           fullVersion = nAgt.substring(verOffset+7);
+           if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+             fullVersion = nAgt.substring(verOffset+8);
+        }
+        // In Firefox, the true version is after "Firefox" 
+        else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) 
+        {
+            browserName = "Firefox";
+            fullVersion = nAgt.substring(verOffset+8);
+        }
+        // In most other browsers, "name/version" is at the end of userAgent 
+        else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < (verOffset=nAgt.lastIndexOf('/')) ) 
+        {
+            browserName = nAgt.substring(nameOffset,verOffset);
+            fullVersion = nAgt.substring(verOffset+1);
+            if (browserName.toLowerCase()==browserName.toUpperCase()) 
+            {
+               browserName = navigator.appName;
+            }
+        }
+        // trim the fullVersion string at semicolon/space if present
+        if ((ix=fullVersion.indexOf(";"))!=-1)
+            fullVersion=fullVersion.substring(0,ix);
+        if ((ix=fullVersion.indexOf(" "))!=-1)
+            fullVersion=fullVersion.substring(0,ix);
+
+        majorVersion = parseInt(''+fullVersion,10);
+        if (untyped isNaN(majorVersion)) 
+        {
+            fullVersion  = ''+Std.parseFloat(Browser.navigator.appVersion); 
+            majorVersion = untyped parseInt(Browser.navigator.appVersion,10);
+        }
+        browserData = {
+                        name: browserName,
+                        fullVersion: fullVersion,
+                        majorVersion: majorVersion,
+                        userAgent : Browser.navigator.userAgent
+                    };
+
     }
     private function parseOS(): Void
     {
@@ -149,7 +218,7 @@ class Capabilities
         {s:'Windows NT 4.0', r:~/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
         {s:'Windows ME', r:~/Windows ME/},
         {s:'Android', r:~/Android/},
-        {s:'Open BSD', r:~/OpenBSD/},
+        {s:'Open BSD', r:~/OpenBSD/},clear
         {s:'Sun OS', r:~/SunOS/},
         {s:'Linux', r:~/(Linux|X11)/},
         {s:'iOS', r:~/(iPhone|iPad|iPod)/},
@@ -236,12 +305,7 @@ class Capabilities
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-
-	}
-
-	public function get_deviceID(): String
-	{
-
+        return deviceOrientation.Unknown;
 	}
 
     public function get_advertisingIdentifier(): String
@@ -266,18 +330,17 @@ class Capabilities
 
 	public function get_deviceName(): String
 	{
-		return null;
+		return browserData.name;
 	}
 
     public function get_deviceType(): DeviceType
     {
-        // TODO
-        return DeviceType.UNKNOWN;
+        return DeviceType.Unknown;
     }
 
     public function get_preferredLanguage(): String
     {
-        // TODO
-        return "EN";
+        var language: String = Browser.navigator.language;
+        return language.substring(0,language.indexOf("-"));
     }
 }

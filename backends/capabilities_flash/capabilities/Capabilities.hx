@@ -6,10 +6,14 @@ package capabilities;
  */
 import Math;
 import capabilities.Platform;
+import flash.net.SharedObject;
 class Capabilities
 {
 	private static var psInstance: Capabilities;
 	private static var __os: OS;
+	private var uniqID: String;
+	private var __sharedObject:SharedObject;
+	private static inline var KEY:String = "flash_persistant_capabilities_visitor_id";
 	private function new()
 	{}
 	public var applicationName(get, never): String;
@@ -32,11 +36,13 @@ class Capabilities
     public var deviceType(get, never): DeviceType;
     public var preferredLanguage(get, never): String;
 
+
 	public static function instance(): Capabilities
 	{
 		if(psInstance == null)
 		{
 			psInstance = new Capabilities();
+			generateUID();
 		}
 		return psInstance;
 	}
@@ -75,12 +81,12 @@ class Capabilities
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-		return null;
+		return DeviceOrientation.UNKNOWN;
 	}
 
 	public function get_deviceID(): String
 	{
-		return null;
+		return uniqID;
 	}
 
     public function get_advertisingIdentifier(): String
@@ -104,18 +110,47 @@ class Capabilities
 
 	public function get_deviceName(): String
 	{
-		return null;
+		return "Flash";
 	}
 
     public function get_deviceType(): DeviceType
     {
-        // TODO
-        return DeviceType.UNKNOWN;
+        return DeviceType.Unknown;
     }
 
     public function get_preferredLanguage(): String
     {
-        // TODO
-        return "EN";
+        return flash.system.Capabilities.language;
+    }
+
+    private function generateUID(): Void
+    {
+        uniqID = guid();
+        storeUID(uniqID);
+    }
+    private function storeUID(uniqID: String):Void
+    {
+        __sharedObject = SharedObject.getLocal(KEY);
+        if(untyped __sharedObject.data.uid == undefined)
+        {
+        	__sharedObject.data.uid = uniqID;
+        	try 
+        	{
+                __sharedObject.flush(10000);
+            } 
+            catch (error:Error) 
+            {
+                trace("Error...Could not write SharedObject to disk\n");
+            }
+        }
+    }
+    private function function guid() 
+    {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        };
+     
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+               s4() + '-' + s4() + s4() + s4();
     }
 }
