@@ -17,11 +17,11 @@ typedef BrowserData={
     majorVersion: String,
     userAgent : String
 };
-enum PersistanceMethod = {Cookie;LocalStorage;};
+enum PersistanceMethod {Cookie;LocalStorage;}
 
 class Capabilities
 {
-    private static var instance: Capabilities;
+    private static var psInstance: Capabilities;
 
     private var osData: OSData;
     private var browserData:BrowserData;
@@ -51,13 +51,13 @@ class Capabilities
 
     public static function instance(): Capabilities
     {
-        if (instance == null)
+        if (psInstance == null)
         {
-            instance = new Capabilities();
-            parseOS();
-            parBrowserData();
+            psInstance = new Capabilities();
+            psInstance.parseOS();
+            psInstance.parBrowserData();
         }
-        return instance;
+        return psInstance;
     }
 
     public function get_isDebug(): Bool
@@ -67,19 +67,21 @@ class Capabilities
 
     public function get_applicatonName(): String
     {
-       return BuildInfo.getInstance().APPLICATION_NAME;
+       return BuildInfo.instance().APPLICATION_NAME;
     }
 
     public function get_applicationVersion(): String
     {
-        return BuildInfo.getInstance().APPLICATION_VERSION;
+        return BuildInfo.instance().APPLICATION_VERSION;
     }
 
     public function get_os(): OS
     {
-        var os:OS = {};
-        os.name = osData.os;
-        os.version = osData.osVersion;
+        var os:OS = {
+            name: osData.os,
+            fullName: osData.os,
+            version:  osData.osVersion
+        };
         return os;
     }
 
@@ -103,19 +105,10 @@ class Capabilities
         return uniqueID;
     }
 
-    public function get_platform(): Platform
-    {
-        return Platform.HTML5;
-    }
 
     public function get_builInfo(): BuildInfo
     {
-        return BuildInfo.getInstance();
-    }
-
-    public function get_applicationName(): String
-    {
-        return BuildInfo.getInstance().APPLICATION_NAME;
+        return BuildInfo.instance();
     }
 
     private function generateAndStoreUniqueID(): Void
@@ -173,7 +166,7 @@ class Capabilities
             fullVersion = nAgt.substring(verOffset+1);
             if (browserName.toLowerCase()==browserName.toUpperCase()) 
             {
-               browserName = navigator.appName;
+               browserName = Browser.navigator.appName;
             }
         }
         // trim the fullVersion string at semicolon/space if present
@@ -182,7 +175,7 @@ class Capabilities
         if ((ix=fullVersion.indexOf(" "))!=-1)
             fullVersion=fullVersion.substring(0,ix);
 
-        majorVersion = parseInt(''+fullVersion,10);
+        majorVersion = untyped parseInt(''+fullVersion,10);
         if (untyped isNaN(majorVersion)) 
         {
             fullVersion  = ''+Std.parseFloat(Browser.navigator.appVersion); 
@@ -218,7 +211,7 @@ class Capabilities
         {s:'Windows NT 4.0', r:~/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
         {s:'Windows ME', r:~/Windows ME/},
         {s:'Android', r:~/Android/},
-        {s:'Open BSD', r:~/OpenBSD/},clear
+        {s:'Open BSD', r:~/OpenBSD/},
         {s:'Sun OS', r:~/SunOS/},
         {s:'Linux', r:~/(Linux|X11)/},
         {s:'iOS', r:~/(iPhone|iPad|iPod)/},
@@ -261,10 +254,10 @@ class Capabilities
 
         return !re.match(Browser.navigator.userAgent);
     }
-    private function function guid() 
+    private function guid(): String 
     {
         function s4() {
-          return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
         };
      
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
@@ -277,35 +270,35 @@ class Capabilities
             var store = Browser.getLocalStorage();
             if(store != null)
             {
-                store.set(KEY, uid);
+                store.setItem(KEY, uid);
             }
         }
         else if(storeType == PersistanceMethod.Cookie)
         {
-            Cookie.set(KEY, uid, 7);
+            js.Cookie.set(KEY, uid, 7);
         }
     }
-    private function grabUID(storeType: PersistanceMethod):Void
+    private function grabUID(storeType: PersistanceMethod):String
     {
         if(storeType == PersistanceMethod.LocalStorage)
         {
             var store = Browser.getLocalStorage();
             if(store != null)
             {
-               return store.get(KEY);
+               return store.getItem(KEY);
             }
             return null;
         }
         else if(storeType == PersistanceMethod.Cookie)
         {
-            return Cookie.get(KEY);
+            return js.Cookie.get(KEY);
         }
         return null;
 	}
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-        return deviceOrientation.Unknown;
+        return DeviceOrientation.Unknown;
 	}
 
     public function get_advertisingIdentifier(): String
@@ -316,11 +309,6 @@ class Capabilities
 	public function get_platform(): Platform
 	{
 		return Platform.HTML5;
-	}
-
-	public function get_builInfo(): BuildInfo
-	{
-		return BuildInfo.instance();
 	}
 
 	public function get_applicationName(): String
@@ -335,7 +323,7 @@ class Capabilities
 
     public function get_deviceType(): DeviceType
     {
-        return DeviceType.Unknown;
+        return DeviceType.UNKNOWN;
     }
 
     public function get_preferredLanguage(): String
