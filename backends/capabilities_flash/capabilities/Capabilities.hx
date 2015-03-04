@@ -42,7 +42,7 @@ class Capabilities
 		if(psInstance == null)
 		{
 			psInstance = new Capabilities();
-			generateUID();
+			psInstance.generateUID();
 		}
 		return psInstance;
 	}
@@ -81,7 +81,7 @@ class Capabilities
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-		return DeviceOrientation.UNKNOWN;
+		return DeviceOrientation.Unknown;
 	}
 
 	public function get_deviceID(): String
@@ -115,7 +115,7 @@ class Capabilities
 
     public function get_deviceType(): DeviceType
     {
-        return DeviceType.Unknown;
+        return DeviceType.UNKNOWN;
     }
 
     public function get_preferredLanguage(): String
@@ -138,16 +138,16 @@ class Capabilities
         	{
                 __sharedObject.flush(10000);
             } 
-            catch (error:Error) 
+            catch (error:Dynamic) 
             {
                 trace("Error...Could not write SharedObject to disk\n");
             }
         }
     }
-    private function function guid() 
+    private function guid() 
     {
         function s4() {
-          return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
         };
      
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
