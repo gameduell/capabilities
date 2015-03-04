@@ -257,8 +257,9 @@ class Capabilities
     }
     private function guid(): String 
     {
-        inline function s4() {
-          return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        inline function s4(): String
+        {
+            return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
         };
      
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +

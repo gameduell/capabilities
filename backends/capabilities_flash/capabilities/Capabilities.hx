@@ -134,9 +134,9 @@ class Capabilities
     private function storeUID(uniqID: String):Void
     {
         __sharedObject = SharedObject.getLocal(KEY);
-        if (untyped __sharedObject.data.uid)
+        if (!Reflect.hasField(__sharedObject.data, "uid"))
         {
-        	__sharedObject.data.uid = uniqID;
+        	untyped __sharedObject.data.uid = uniqID;
         	try 
         	{
                 __sharedObject.flush(10000);
@@ -149,8 +149,9 @@ class Capabilities
     }
     private function guid() 
     {
-        function s4() {
-          return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        inline function s4(): String
+        {
+            return untyped Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
         };
      
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
