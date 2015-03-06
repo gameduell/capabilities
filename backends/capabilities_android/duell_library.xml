@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <library>
+
+    <duelllib name="google_play_services" version="1.0.0+" />
+
     <platform-config>
         <android>
             <java-source name="CAPABILITIES" path="java" />

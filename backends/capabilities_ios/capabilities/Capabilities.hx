@@ -44,15 +44,28 @@ class Capabilities
     private function new()
     {}
 
-	public static function instance(): Capabilities
-	{
-		if (psInstance == null)
-		{
-			psInstance = new Capabilities();
-		}
+    public static function initialize(callback: Void -> Void): Void
+    {
+        if (psInstance == null)
+        {
+            psInstance = new Capabilities();
+        }
 
-		return psInstance;
-	}
+        if (callback != null)
+        {
+            callback();
+        }
+    }
+
+    public static function instance(): Capabilities
+    {
+        if (psInstance == null)
+        {
+            throw '"initialize()" should be called first before acessing the instance';
+        }
+
+        return psInstance;
+    }
 
 	private function get_isDebug(): Bool
 	{

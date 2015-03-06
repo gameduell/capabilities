@@ -53,11 +53,24 @@ class Capabilities
 
     private var uniqueID: String;
 
-    public static function instance(): Capabilities
+    public static function initialize(callback: Void -> Void): Void
     {
         if (psInstance == null)
         {
             psInstance = new Capabilities();
+        }
+
+        if (callback != null)
+        {
+            callback();
+        }
+    }
+
+    public static function instance(): Capabilities
+    {
+        if (psInstance == null)
+        {
+            throw '"initialize()" should be called first before acessing the instance';
         }
 
         return psInstance;

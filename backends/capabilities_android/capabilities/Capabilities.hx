@@ -10,12 +10,12 @@ import capabilities.Platform;
  */
 class Capabilities
 {
+    private static var retrieveAdvertisementIdNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "retrieveAdvertisementId", "(Lorg/haxe/duell/hxjni/HaxeObject;)V");
     private static var getDeviceNameNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getDeviceName", "()Ljava/lang/String;");
     private static var getSystemVersionNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getSystemVersion", "()Ljava/lang/String;");
-    private static var getAndroidIdNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
-    "getAndroidId", "()Ljava/lang/String;");
     private static var getSerialNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getSerial", "()Ljava/lang/String;");
     private static var getResolutionXNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
@@ -31,6 +31,8 @@ class Capabilities
 
     private static var psInstance: Capabilities;
 
+    private var onInitializedCallback: Void -> Void;
+
 	public var applicationName(get, never): String;
 	public var applicationVersion(get, never): String;
 
@@ -45,25 +47,55 @@ class Capabilities
 	public var deviceID(get, never): String;
 	public var platform(get, never): Platform;
 
-    public var advertisingIdentifier(get, never): String;
+    public var advertisingIdentifier(default, null): String;
 
 	public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
 
     public var preferredLanguage(get, never): String;
 
-    private function new()
-    {}
+    private function new(callback: Void -> Void)
+    {
+        onInitializedCallback = callback;
 
-	public static function instance(): Capabilities
-	{
-		if (psInstance == null)
-		{
-            psInstance = new Capabilities();
-		}
+        retrieveAdvertisementIdNative(this);
+    }
 
-		return psInstance;
-	}
+    public static function initialize(callback: Void -> Void): Void
+    {
+        if (psInstance == null)
+        {
+            psInstance = new Capabilities(callback);
+        }
+        else
+        {
+            // if it is already initialized, call the callback directly
+            if (callback != null)
+            {
+                callback();
+            }
+        }
+    }
+
+    public function onDataReceived(data: Dynamic): Void
+    {
+        advertisingIdentifier = data;
+
+        if (onInitializedCallback != null)
+        {
+            onInitializedCallback();
+        }
+    }
+
+    public static function instance(): Capabilities
+    {
+        if (psInstance == null)
+        {
+            throw '"initialize()" should be called first before acessing the instance';
+        }
+
+        return psInstance;
+    }
 
 	public function get_isDebug(): Bool
 	{
@@ -113,11 +145,6 @@ class Capabilities
 	{
         return getSerialNative();
 	}
-
-    public function get_advertisingIdentifier(): String
-    {
-        return getAndroidIdNative();
-    }
 
 	public function get_platform(): Platform
 	{

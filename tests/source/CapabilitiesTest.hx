@@ -12,41 +12,76 @@ class CapabilitiesTest extends unittest.TestCase
 {
 	public function testBuildInfo(): Void
 	{
-		var buildInfo: BuildInfo = Capabilities.instance().buildInfo;
+        assertAsyncStart("testBuildInfo");
 
-        assertTrue(buildInfo != null);
+        Capabilities.initialize(function(): Void
+        {
+            var buildInfo: BuildInfo = Capabilities.instance().buildInfo;
 
-		assertEquals(buildInfo.APPLICATION_NAME,"Capabilities App");
-		assertEquals(buildInfo.APPLICATION_BUNDLE, "com.gameduell.tests.capabilities");
-		assertEquals(buildInfo.COMPANY_NAME, "GameDuell GmbH");
-		assertEquals(buildInfo.APPLICATION_VERSION, "0.0.1");
+            assertTrue(buildInfo != null);
+
+            assertEquals(buildInfo.APPLICATION_NAME,"Capabilities App");
+            assertEquals(buildInfo.APPLICATION_BUNDLE, "com.gameduell.tests.capabilities");
+            assertEquals(buildInfo.COMPANY_NAME, "GameDuell GmbH");
+            assertEquals(buildInfo.APPLICATION_VERSION, "0.0.1");
+
+            assertAsyncFinish("testBuildInfo");
+        });
 	}
 
 	public function testPlatform(): Void
 	{
-    #if flash
-        assertEquals(Capabilities.instance().platform, Platform.FLASH);
-    #elseif ios
-        assertEquals(Capabilities.instance().platform, Platform.IOS);
-    #elseif android
-        assertEquals(Capabilities.instance().platform, Platform.ANDROID);
-    #elseif html5
-        assertEquals(Capabilities.instance().platform, Platform.HTML5);
-    #end
+        assertAsyncStart("testPlatform");
+
+        Capabilities.initialize(function(): Void
+        {
+        #if flash
+            assertEquals(Capabilities.instance().platform, Platform.FLASH);
+        #elseif ios
+            assertEquals(Capabilities.instance().platform, Platform.IOS);
+        #elseif android
+            assertEquals(Capabilities.instance().platform, Platform.ANDROID);
+        #elseif html5
+            assertEquals(Capabilities.instance().platform, Platform.HTML5);
+        #end
+
+            assertAsyncFinish("testPlatform");
+        });
 	}
 
     public function testDeviceID(): Void
     {
-        assertTrue(Capabilities.instance().deviceID != null);
+        assertAsyncStart("testDeviceID");
+
+        Capabilities.initialize(function(): Void
+        {
+            assertTrue(Capabilities.instance().deviceID != null);
+
+            assertAsyncFinish("testDeviceID");
+        });
     }
 
     public function testDeviceName(): Void
     {
-        assertTrue(Capabilities.instance().deviceName != null);
+        assertAsyncStart("testDeviceName");
+
+        Capabilities.initialize(function(): Void
+        {
+            assertTrue(Capabilities.instance().deviceName != null);
+
+            assertAsyncFinish("testDeviceName");
+        });
     }
 
 	public function testDeviceOrientation(): Void
 	{
-        assertTrue(Capabilities.instance().deviceOrientation != null);
+        assertAsyncStart("testDeviceOrientation");
+
+        Capabilities.initialize(function(): Void
+        {
+            assertTrue(Capabilities.instance().deviceOrientation != null);
+
+            assertAsyncFinish("testDeviceOrientation");
+        });
 	}
 }

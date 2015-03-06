@@ -95,4 +95,9 @@ extern class Capabilities
 	* get the Capabilities instance
 	*/
 	public static function instance(): Capabilities;
+
+    /**
+        Initialization of the library, should be called before anything else
+     */
+    public static function initialize(callback: Void -> Void): Void;
 }

@@ -13,7 +13,13 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import org.haxe.duell.DuellActivity;
+import org.haxe.duell.hxjni.HaxeObject;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+
+import java.io.IOException;
 import java.util.Locale;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
@@ -34,12 +40,6 @@ public final class Capabilities
     {
         DisplayMetrics metrics = DuellActivity.getInstance().getResources().getDisplayMetrics();
         return metrics.heightPixels;
-    }
-
-    public static float getDensityDpi()
-    {
-        DisplayMetrics metrics = DuellActivity.getInstance().getResources().getDisplayMetrics();
-        return metrics.densityDpi;
     }
 
     public static boolean isLandscape()
@@ -63,7 +63,31 @@ public final class Capabilities
         }
     }
 
-    public static String getAndroidId()
+    public static void retrieveAdvertisementId(final HaxeObject haxeObject)
+    {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                String id = getAndroidId();
+
+                try
+                {
+                    AdvertisingIdClient.Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(DuellActivity.getInstance());
+                    id = adInfo.getId();
+                }
+                catch (IOException e) {}
+                catch (GooglePlayServicesNotAvailableException e) {}
+                catch (GooglePlayServicesRepairableException e) {}
+                catch (NullPointerException e) {}
+
+                haxeObject.call1("onDataReceived", id);
+            }
+        }).start();
+    }
+
+    private static String getAndroidId()
     {
         return Settings.Secure.getString(DuellActivity.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
