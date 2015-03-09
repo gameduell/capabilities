@@ -7,7 +7,7 @@ package capabilities;
  */
 enum DeviceOrientation
 {
-    Landscape;
-    Portrait;
-    Unknown;
+    UNKNOWN;
+    LANDSCAPE;
+    PORTRAIT;
 }

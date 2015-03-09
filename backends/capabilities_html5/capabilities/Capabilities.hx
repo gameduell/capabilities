@@ -30,7 +30,7 @@ class Capabilities
     private static var psInstance: Capabilities;
 
     private var osData: OSData;
-    private var browserData:BrowserData;
+    private var browserData: BrowserData;
 
     public var applicationName(get, null): String;
     public var applicationVersion(get, null): String;
@@ -48,7 +48,7 @@ class Capabilities
     public var advertisingIdentifier(get, never): String;
 
     public var buildInfo(get, never): BuildInfo;
-    public var deviceType(get, never): DeviceType;
+    public var deviceType(default, null): DeviceType;
     public var preferredLanguage(get, never): String;
 
     private var uniqueID: String;
@@ -94,12 +94,12 @@ class Capabilities
 
     public function get_applicationVersion(): String
     {
-        return BuildInfo.instance().APPLICATION_VERSION;
+        return BuildInfo.instance().applicationVersion;
     }
 
     public function get_os(): OS
     {
-        var os:OS =
+        var os: OS =
         {
             name: osData.os,
             fullName: osData.os,
@@ -183,7 +183,7 @@ class Capabilities
         else if ((verOffset = nAgt.indexOf("Firefox")) != -1)
         {
             browserName = "Firefox";
-            fullVersion = nAgt.substring(verOffset+8);
+            fullVersion = nAgt.substring(verOffset + 8);
         }
         // In most other browsers, "name/version" is at the end of userAgent 
         else if ( (nameOffset=nAgt.lastIndexOf(' ') + 1) < (verOffset = nAgt.lastIndexOf('/')) )
@@ -207,10 +207,10 @@ class Capabilities
             fullVersion = fullVersion.substring(0, ix);
         }
 
-        majorVersion = untyped parseInt(''+fullVersion, 10);
+        majorVersion = untyped parseInt('' + fullVersion, 10);
         if (untyped isNaN(majorVersion)) 
         {
-            fullVersion  = ''+Std.parseFloat(Browser.navigator.appVersion); 
+            fullVersion  = ''+ Std.parseFloat(Browser.navigator.appVersion);
             majorVersion = untyped parseInt(Browser.navigator.appVersion, 10);
         }
 
@@ -269,6 +269,7 @@ class Capabilities
         }
 
         var osVersion = "unknown";
+        deviceType = DeviceType.BROWSER;
 
         if (~/Windows/.match(os))
         {
@@ -280,17 +281,24 @@ class Capabilities
         {
             case 'Mac OS X':
                 osVersion = ~/Mac OS X (10[._\d]+)/.split(nAgt)[1];
+
             case 'Android':
+            {
                 osVersion = ~/Android ([._\d]+)/.split(nAgt)[1];
+                deviceType = DeviceType.MOBILE_BROWSER;
+            }
             case 'iOS':
+            {
                 var osVersionArray = ~/OS (\d+)_(\d+)_?(\d+)?/.split(nVer);
                 osVersion = osVersionArray[1] + '.' + osVersionArray[2] + '.' + "x";
+                deviceType = DeviceType.MOBILE_BROWSER;
+            }
         }
 
         osData = { os : os, osVersion : osVersion };
     }
 
-    private function guid(): String 
+    private static function guid(): String
     {
         inline function s4(): String
         {
@@ -303,7 +311,7 @@ class Capabilities
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-        return DeviceOrientation.Unknown;
+        return DeviceOrientation.UNKNOWN;
 	}
 
     public function get_advertisingIdentifier(): String
@@ -323,18 +331,13 @@ class Capabilities
 
 	public function get_applicationName(): String
 	{
-		return BuildInfo.instance().APPLICATION_NAME;
+		return BuildInfo.instance().applicationName;
 	}
 
 	public function get_deviceName(): String
 	{
 		return browserData.name;
 	}
-
-    public function get_deviceType(): DeviceType
-    {
-        return DeviceType.UNKNOWN;
-    }
 
     public function get_preferredLanguage(): String
     {

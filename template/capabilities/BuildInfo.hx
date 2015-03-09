@@ -9,11 +9,11 @@ class BuildInfo
 {
     private static var psInstance: BuildInfo;
 
-    public var APPLICATION_NAME(default, never): String = "::LIBRARY.CAPABILITIES.APPLICATION_NAME::";
-    public var APPLICATION_BUNDLE(default, never): String = "::LIBRARY.CAPABILITIES.APPLICATION_BUNDLE::";
-    public var COMPANY_NAME(default, never): String = "::LIBRARY.CAPABILITIES.COMPANY_NAME::";
-    public var APPLICATION_VERSION(default, never): String = "::LIBRARY.CAPABILITIES.APPLICATION_VERSION::";
-    public var APPLICATION_BUILD_NUMBER(default, never): String = "::LIBRARY.CAPABILITIES.APPLICATION_BUILD_NUMBER::";
+    public var applicationName(default, never): String = "::APP.TITLE::";
+    public var applicationBundle(default, never): String = "::APP.PACKAGE::";
+    public var companyName(default, never): String = "::APP.COMPANY::";
+    public var applicationVersion(default, never): String = "::APP.VERSION::";
+    public var applicationBuildNumber(default, never): String = "::APP.BUILD_NUMBER::";
 
     private function new()
     {}

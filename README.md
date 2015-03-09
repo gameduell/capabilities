@@ -1,7 +1,17 @@
 = Description =
 
 The Capabilities Library provides properties that describe the system and runtime that are hosting the application.
+
+
 = Release Log =
+
+== 1.0.0 ==
+
+- Changed the API to require the use of an initialize() method before accessing the instance
+- Removed screenDPI feature
+- Added advertisingIdentifier
+- Added deviceType (enum)
+- Added preferredLanguage
 
 == 0.8.0 ==
 
@@ -16,7 +26,7 @@ The Capabilities Library provides properties that describe the system and runtim
 -- screenDPI of type Float.
 -- resolutionX of type Int.
 -- resolutionY of type Int.
--- deviceOrientation of type DeviceOrientation (typedef).
+-- deviceOrientation of type DeviceOrientation (enum).
 -- deviceName of type String, Maybe null in flash or html5.
 -- deviceID of type String, Maybe null in flash or html5.
 -- platform of type Platform (HTML5, ANDROID, IOS or FLASH).

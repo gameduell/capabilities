@@ -9,8 +9,9 @@ package capabilities;
  */
 enum DeviceType
 {
+    UNKNOWN;
     PHONE;
     TABLET;
     BROWSER;
-    UNKNOWN;
+    MOBILE_BROWSER;
 }

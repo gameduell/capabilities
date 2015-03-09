@@ -20,10 +20,10 @@ class CapabilitiesTest extends unittest.TestCase
 
             assertTrue(buildInfo != null);
 
-            assertEquals(buildInfo.APPLICATION_NAME,"Capabilities App");
-            assertEquals(buildInfo.APPLICATION_BUNDLE, "com.gameduell.tests.capabilities");
-            assertEquals(buildInfo.COMPANY_NAME, "GameDuell GmbH");
-            assertEquals(buildInfo.APPLICATION_VERSION, "0.0.1");
+            assertEquals(buildInfo.applicationName,"Capabilities App");
+            assertEquals(buildInfo.applicationBundle, "com.gameduell.tests.capabilities");
+            assertEquals(buildInfo.companyName, "GameDuell GmbH");
+            assertEquals(buildInfo.applicationVersion, "0.0.1");
 
             assertAsyncFinish("testBuildInfo");
         });

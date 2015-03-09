@@ -85,6 +85,8 @@ class Capabilities
         {
             onInitializedCallback();
         }
+
+        onInitializedCallback = null;
     }
 
     public static function instance(): Capabilities
@@ -108,7 +110,7 @@ class Capabilities
 
 	public function get_applicationVersion(): String
 	{
-        return BuildInfo.instance().APPLICATION_VERSION;
+        return BuildInfo.instance().applicationVersion;
 	}
 
 	public function get_os(): OS
@@ -138,7 +140,7 @@ class Capabilities
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-        return isLandscapeNative() ? DeviceOrientation.Landscape : DeviceOrientation.Portrait;
+        return isLandscapeNative() ? DeviceOrientation.LANDSCAPE : DeviceOrientation.PORTRAIT;
 	}
 
 	public function get_deviceID(): String
@@ -158,7 +160,7 @@ class Capabilities
 
 	public function get_applicationName(): String
 	{
-		return BuildInfo.instance().APPLICATION_NAME;
+		return BuildInfo.instance().applicationName;
 	}
 
 	public function get_deviceName(): String

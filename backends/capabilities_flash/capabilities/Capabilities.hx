@@ -72,7 +72,7 @@ class Capabilities
 
 	public function get_applicationVersion(): String
 	{
-		return BuildInfo.instance().APPLICATION_VERSION;
+		return BuildInfo.instance().applicationVersion;
 	}
 
 	public function get_os(): OS
@@ -104,7 +104,7 @@ class Capabilities
 
 	public function get_deviceOrientation(): DeviceOrientation
 	{
-		return DeviceOrientation.Unknown;
+		return DeviceOrientation.UNKNOWN;
 	}
 
 	public function get_deviceID(): String
@@ -129,7 +129,7 @@ class Capabilities
 
 	public function get_applicationName(): String
 	{
-		return BuildInfo.instance().APPLICATION_NAME;
+		return BuildInfo.instance().applicationName;
 	}
 
 	public function get_deviceName(): String

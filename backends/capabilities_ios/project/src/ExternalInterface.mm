@@ -44,7 +44,7 @@ static value ioscapabilities_getDeviceID()
 {
     UIDevice *device = [UIDevice currentDevice];
 
-    NSString *currentDeviceId = [[device identifierForVendor]UUIDString];
+    NSString *currentDeviceId = [[device identifierForVendor] UUIDString];
 
     if (currentDeviceId)
     {
@@ -52,7 +52,7 @@ static value ioscapabilities_getDeviceID()
     }
     else
     {
-        return NULL;
+        return alloc_null();
     }
 }
 DEFINE_PRIM(ioscapabilities_getDeviceID,0);
@@ -68,14 +68,14 @@ static value ioscapabilities_getAdvertisingIdentifier()
     }
     else
     {
-        return NULL;
+        return alloc_null();
     }
 }
 DEFINE_PRIM(ioscapabilities_getAdvertisingIdentifier,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static value ioscapabilities_getDeviceName()
 {
-    NSString  *currentDeviceName = [[UIDevice currentDevice] name];
+    NSString *currentDeviceName = [[UIDevice currentDevice] name];
     return alloc_string(currentDeviceName.UTF8String);
 }
 DEFINE_PRIM(ioscapabilities_getDeviceName,0);

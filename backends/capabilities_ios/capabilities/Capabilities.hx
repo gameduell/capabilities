@@ -78,7 +78,7 @@ class Capabilities
 
 	private function get_applicationVersion(): String
 	{
-		return BuildInfo.instance().APPLICATION_VERSION;
+		return BuildInfo.instance().applicationVersion;
 	}
 
 	private function get_os(): OS
@@ -108,7 +108,7 @@ class Capabilities
 
 	private function get_deviceOrientation(): DeviceOrientation
 	{
-		return getDeviceOrientationNative() == 0 ? DeviceOrientation.Portrait : DeviceOrientation.Landscape;
+		return getDeviceOrientationNative() == 0 ? DeviceOrientation.PORTRAIT : DeviceOrientation.LANDSCAPE;
 	}
 
 	private function get_deviceID(): String
@@ -133,7 +133,7 @@ class Capabilities
 
 	private function get_applicationName(): String
 	{
-		return BuildInfo.instance().APPLICATION_NAME;
+		return BuildInfo.instance().applicationName;
 	}
 
 	private function get_deviceName(): String

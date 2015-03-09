@@ -18,10 +18,6 @@ extern class Capabilities
 	* applicationVersion the application version specefied in the duell_project.xml
 	*/
 	public var applicationVersion(get, never): String;
-	/**
-	* applicationPackage the application package specefied in the duell_project.xml
-	*/
-	public var applicationPackage(get, never): String;
 
 	/**
 	* os the current operating system of the application
