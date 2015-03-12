@@ -13,7 +13,7 @@
 #include <hx/CFFI.h>
 
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-static value ioscapabilities_getDeviceOrientation()
+static value ioscapabilities_isLandscapeNative()
 {
     UIDeviceOrientation dOrientation = [UIDevice currentDevice].orientation;
     UIInterfaceOrientation iOrientation = [UIApplication sharedApplication].statusBarOrientation;
@@ -31,14 +31,9 @@ static value ioscapabilities_getDeviceOrientation()
 		landscape = UIDeviceOrientationIsLandscape(dOrientation);
 	}
 
-	if (landscape)
-	{
-		return alloc_int(0);
-	}
-
-    return alloc_int(1);
+	return alloc_bool(landscape);
 }
-DEFINE_PRIM(ioscapabilities_getDeviceOrientation,0);
+DEFINE_PRIM(ioscapabilities_isLandscapeNative,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static value ioscapabilities_getDeviceID()
 {

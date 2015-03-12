@@ -12,13 +12,13 @@ class Capabilities
 {
     private static var getSystemNameNative = Lib.load("ioscapabilities","ioscapabilities_getSystemName",0);
     private static var getSystemVersionNative = Lib.load("ioscapabilities","ioscapabilities_getSystemVersion",0);
-    private static var getDeviceOrientationNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceOrientation",0);
     private static var getDeviceIDNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceID",0);
     private static var getDeviceNameNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceName",0);
     private static var getAdvertisingIdentifierNative = Lib.load("ioscapabilities","ioscapabilities_getAdvertisingIdentifier",0);
     private static var getResolutionXNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionX",0);
     private static var getResolutionYNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionY",0);
     private static var getPreferredLanguageNative = Lib.load("ioscapabilities","ioscapabilities_getPreferredLanguage",0);
+    private static var isLandscapeNative = Lib.load("ioscapabilities","ioscapabilities_isLandscapeNative",0);
     private static var isIPhoneNative = Lib.load("ioscapabilities","ioscapabilities_isIPhone",0);
 
 	private static var psInstance: Capabilities = null;
@@ -108,7 +108,7 @@ class Capabilities
 
 	private function get_deviceOrientation(): DeviceOrientation
 	{
-		return getDeviceOrientationNative() == 0 ? DeviceOrientation.PORTRAIT : DeviceOrientation.LANDSCAPE;
+		return isLandscapeNative() ? DeviceOrientation.LANDSCAPE : DeviceOrientation.PORTRAIT;
 	}
 
 	private function get_deviceID(): String
