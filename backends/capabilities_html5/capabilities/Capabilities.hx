@@ -352,6 +352,17 @@ class Capabilities
     public function get_preferredLanguage(): String
     {
         var language: String = Browser.navigator.language;
-        return language.substring(0,language.indexOf("-"));
+        var idx: Int = language.indexOf("-");
+
+        if (idx == -1)
+        {
+            // the language is in the format "de"
+            return language;
+        }
+        else
+        {
+            // the language is in the format "en-US"
+            return language.substring(0, idx);
+        }
     }
 }
