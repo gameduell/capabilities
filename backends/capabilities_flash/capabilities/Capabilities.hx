@@ -4,13 +4,121 @@ package capabilities;
  * @date  16/01/15
  * Copyright (c) 2014 GameDuell GmbH
  */
+import flash.external.ExternalInterface;
+import flash.xml.XML;
 import preferences.Editor;
 import preferences.Preferences;
-import Math;
 import capabilities.Platform;
+
+typedef BrowserData =
+{
+    name: String,
+    fullVersion: String,
+    majorVersion: String,
+    userAgent : String
+}
 
 class Capabilities
 {
+    private static inline var JS_CODE: String = '<![CDATA[
+     function()
+     {
+        var nVer = navigator.appVersion;
+        var nAgt = navigator.userAgent;
+        var browserName  = navigator.appName;
+        var fullVersion  = "" + parseFloat(navigator.appVersion);
+        var majorVersion = parseInt(navigator.appVersion, 10);
+        var nameOffset, verOffset, ix;
+
+        // In Opera, the true version is after "Opera" or after "Version"
+        if ((verOffset=nAgt.indexOf("Opera")) != -1)
+        {
+            browserName = "Opera";
+            fullVersion = nAgt.substring(verOffset + 6);
+            if ((verOffset = nAgt.indexOf("Version")) != -1)
+            {
+                fullVersion = nAgt.substring(verOffset + 8);
+            }
+        }
+        // Opera, again
+        else if ((verOffset=nAgt.indexOf("OPR")) != -1)
+        {
+            browserName = "Opera";
+            fullVersion = nAgt.substring(verOffset + 4);
+            if ((verOffset = nAgt.indexOf("Version")) != -1)
+            {
+                fullVersion = nAgt.substring(verOffset + 6);
+            }
+        }
+        // In MSIE, the true version is after "MSIE" in userAgent
+        else if ((verOffset=nAgt.indexOf("MSIE")) != -1)
+        {
+            browserName = "Microsoft Internet Explorer";
+            fullVersion = nAgt.substring(verOffset + 5);
+        }
+        // In Chrome, the true version is after "Chrome"
+        else if ((verOffset = nAgt.indexOf("Chrome")) != -1)
+        {
+            browserName = "Chrome";
+            fullVersion = nAgt.substring(verOffset + 7);
+        }
+        // In Safari, the true version is after "Safari" or after "Version"
+        else if ((verOffset = nAgt.indexOf("Safari")) != -1)
+        {
+            browserName = "Safari";
+            fullVersion = nAgt.substring(verOffset + 7);
+            if ((verOffset = nAgt.indexOf("Version")) != -1)
+            {
+                fullVersion = nAgt.substring(verOffset + 8);
+            }
+        }
+        // In Firefox, the true version is after "Firefox"
+        else if ((verOffset = nAgt.indexOf("Firefox")) != -1)
+        {
+            browserName = "Firefox";
+            fullVersion = nAgt.substring(verOffset + 8);
+        }
+        // In most other browsers, "name/version" is at the end of userAgent
+        else if ( (nameOffset=nAgt.lastIndexOf(\' \') + 1) < (verOffset = nAgt.lastIndexOf(\'/\')) )
+        {
+            browserName = nAgt.substring(nameOffset,verOffset);
+            fullVersion = nAgt.substring(verOffset + 1);
+
+            if (browserName.toLowerCase() == browserName.toUpperCase())
+            {
+               browserName = navigator.appName;
+            }
+        }
+        // trim the fullVersion string at semicolon/space if present
+        if ((ix = fullVersion.indexOf(";")) != -1)
+        {
+            fullVersion=fullVersion.substring(0, ix);
+        }
+
+        if ((ix = fullVersion.indexOf(" ")) != -1)
+        {
+            fullVersion = fullVersion.substring(0, ix);
+        }
+
+        majorVersion = parseInt("" + fullVersion, 10);
+        if (isNaN(majorVersion))
+        {
+            fullVersion  = "" + parseFloat(navigator.appVersion);
+            majorVersion = parseInt(navigator.appVersion, 10);
+        }
+
+        browserData =
+        {
+            name: browserName,
+            fullVersion: fullVersion,
+            majorVersion: majorVersion,
+            userAgent : navigator.userAgent
+        };
+
+        return browserData;
+     }
+     ]]>';
+
     private static inline var KEY: String = "capabilities_visitor_id";
 
 	private static var psInstance: Capabilities;
@@ -36,6 +144,8 @@ class Capabilities
 	public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
     public var preferredLanguage(get, never): String;
+
+    private var browserData: BrowserData;
 
     public static function initialize(callback: Void -> Void): Void
     {
@@ -63,6 +173,12 @@ class Capabilities
     private function new()
     {
         generateUID();
+        parseBrowserData();
+    }
+
+    private function parseBrowserData(): Void
+    {
+        browserData = ExternalInterface.call(untyped new XML(JS_CODE));
     }
 
 	public function get_isDebug(): Bool
@@ -134,12 +250,12 @@ class Capabilities
 
 	public function get_deviceName(): String
 	{
-		return "Flash";
+		return browserData.name;
 	}
 
     public function get_deviceType(): DeviceType
     {
-        return DeviceType.UNKNOWN;
+        return DeviceType.BROWSER;
     }
 
     public function get_preferredLanguage(): String
