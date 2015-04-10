@@ -1,9 +1,10 @@
-package capabilities;
-/**
- * @author kgar
- * @date  16/01/15
- * Copyright (c) 2014 GameDuell GmbH
+/*
+ * Copyright (c) 2003-2015 GameDuell GmbH, All Rights Reserved
+ * This document is strictly confidential and sole property of GameDuell GmbH, Berlin, Germany
  */
+
+package capabilities;
+
 import flash.external.ExternalInterface;
 import flash.xml.XML;
 import preferences.Editor;
@@ -133,6 +134,7 @@ class Capabilities
 
 	public var resolutionX(get, never): Int;
 	public var resolutionY(get, never): Int;
+    public var density(get, never): Float;
 
 	public var deviceOrientation(get, never): DeviceOrientation;
 	public var deviceName(get, never): String;
@@ -217,6 +219,11 @@ class Capabilities
   {
   return Math.ceil(flash.system.Capabilities.screenResolutionY);
   }
+
+    private function get_density(): Float
+    {
+        return 1.0; // TODO Find out if we are running in a retina browser
+    }
 
   public function get_deviceOrientation(): DeviceOrientation
   {
