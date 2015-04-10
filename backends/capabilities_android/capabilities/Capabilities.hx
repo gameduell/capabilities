@@ -1,13 +1,13 @@
+/*
+ * Copyright (c) 2003-2015 GameDuell GmbH, All Rights Reserved
+ * This document is strictly confidential and sole property of GameDuell GmbH, Berlin, Germany
+ */
+
 package capabilities;
 
 import hxjni.JNI;
 import capabilities.Platform;
 
-/**
- * @author kgar
- * @date  16/01/15
- * Copyright (c) 2014 GameDuell GmbH
- */
 class Capabilities
 {
     private static var retrieveAdvertisementIdNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
@@ -22,6 +22,8 @@ class Capabilities
     "getResolutionX", "()I");
     private static var getResolutionYNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getResolutionY", "()I");
+    private static var getDensityNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "getDensity", "()D");
     private static var isLandscapeNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "isLandscape", "()Z");
     private static var isPhoneNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
@@ -41,6 +43,7 @@ class Capabilities
 
 	public var resolutionX(get, never): Int;
 	public var resolutionY(get, never): Int;
+    public var density(get, never): Float;
 
 	public var deviceOrientation(get, never): DeviceOrientation;
 	public var deviceName(get, never): String;
@@ -99,7 +102,7 @@ class Capabilities
         return psInstance;
     }
 
-	public function get_isDebug(): Bool
+	private function get_isDebug(): Bool
 	{
     #if debug
         return true;
@@ -108,12 +111,12 @@ class Capabilities
     #end
 	}
 
-	public function get_applicationVersion(): String
+    private function get_applicationVersion(): String
 	{
         return BuildInfo.instance().applicationVersion;
 	}
 
-	public function get_os(): OS
+    private function get_os(): OS
 	{
         var osName: String = "Android";
         var osVersion: String = getSystemVersionNative();
@@ -128,52 +131,57 @@ class Capabilities
         return os;
 	}
 
-	public function get_resolutionX(): Int
+    private function get_resolutionX(): Int
 	{
         return getResolutionXNative();
 	}
 
-	public function get_resolutionY(): Int
+    private function get_resolutionY(): Int
 	{
         return getResolutionYNative();
 	}
 
-	public function get_deviceOrientation(): DeviceOrientation
+    private function get_density(): Float
+    {
+        return getDensityNative();
+    }
+
+    private function get_deviceOrientation(): DeviceOrientation
 	{
         return isLandscapeNative() ? DeviceOrientation.LANDSCAPE : DeviceOrientation.PORTRAIT;
 	}
 
-	public function get_deviceID(): String
+    private function get_deviceID(): String
 	{
         return getSerialNative();
 	}
 
-	public function get_platform(): Platform
+    private function get_platform(): Platform
 	{
 		return Platform.ANDROID;
 	}
 
-	public function get_buildInfo(): BuildInfo
+    private function get_buildInfo(): BuildInfo
 	{
 		return BuildInfo.instance();
 	}
 
-	public function get_applicationName(): String
+    private function get_applicationName(): String
 	{
 		return BuildInfo.instance().applicationName;
 	}
 
-	public function get_deviceName(): String
+    private function get_deviceName(): String
 	{
 		return getDeviceNameNative();
 	}
 
-    public function get_deviceType(): DeviceType
+    private function get_deviceType(): DeviceType
     {
         return isPhoneNative() ? DeviceType.PHONE : DeviceType.TABLET;
     }
 
-    public function get_preferredLanguage(): String
+    private function get_preferredLanguage(): String
     {
         return getPreferredLanguageNative();
     }

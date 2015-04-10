@@ -1,13 +1,13 @@
+/*
+ * Copyright (c) 2003-2015 GameDuell GmbH, All Rights Reserved
+ * This document is strictly confidential and sole property of GameDuell GmbH, Berlin, Germany
+ */
+
 package capabilities;
 
 import capabilities.Platform;
 import cpp.Lib;
 
-/**
- * @author kgar
- * @date  16/01/15
- * Copyright (c) 2014 GameDuell GmbH
- */
 class Capabilities
 {
     private static var getSystemNameNative = Lib.load("ioscapabilities","ioscapabilities_getSystemName",0);
@@ -17,6 +17,7 @@ class Capabilities
     private static var getAdvertisingIdentifierNative = Lib.load("ioscapabilities","ioscapabilities_getAdvertisingIdentifier",0);
     private static var getResolutionXNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionX",0);
     private static var getResolutionYNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionY",0);
+    private static var getDensityNative = Lib.load("ioscapabilities","ioscapabilities_getDensity",0);
     private static var getPreferredLanguageNative = Lib.load("ioscapabilities","ioscapabilities_getPreferredLanguage",0);
     private static var isLandscapeNative = Lib.load("ioscapabilities","ioscapabilities_isLandscapeNative",0);
     private static var isIPhoneNative = Lib.load("ioscapabilities","ioscapabilities_isIPhone",0);
@@ -31,6 +32,7 @@ class Capabilities
 
 	public var resolutionX(get, never): Int;
 	public var resolutionY(get, never): Int;
+    public var density(get, never): Float;
 
 	public var deviceOrientation(get, never): DeviceOrientation;
 	public var deviceName(get, never): String;
@@ -106,6 +108,11 @@ class Capabilities
         return getResolutionYNative();
 	}
 
+    private function get_density(): Float
+    {
+        return getDensityNative();
+    }
+
 	private function get_deviceOrientation(): DeviceOrientation
 	{
 		return isLandscapeNative() ? DeviceOrientation.LANDSCAPE : DeviceOrientation.PORTRAIT;
@@ -116,7 +123,7 @@ class Capabilities
 		return getDeviceIDNative();
 	}
 
-    public function get_advertisingIdentifier(): String
+    private function get_advertisingIdentifier(): String
     {
         return getAdvertisingIdentifierNative();
     }
@@ -141,12 +148,12 @@ class Capabilities
 		return getDeviceNameNative();
 	}
 
-    public function get_deviceType(): DeviceType
+    private function get_deviceType(): DeviceType
     {
         return isIPhoneNative() ? DeviceType.PHONE : DeviceType.TABLET;
     }
 
-    public function get_preferredLanguage(): String
+    private function get_preferredLanguage(): String
     {
         return getPreferredLanguageNative();
     }

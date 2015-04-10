@@ -122,6 +122,13 @@ static value ioscapabilities_getResolutionY()
 }
 DEFINE_PRIM(ioscapabilities_getResolutionY,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+static value ioscapabilities_getDensity()
+{
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    return alloc_float(screenScale);
+}
+DEFINE_PRIM(ioscapabilities_getDensity,0);
+///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static value ioscapabilities_getPreferredLanguage()
 {
     NSString *preferredLanguage = [[NSLocale preferredLanguages] objectAtIndex:0];

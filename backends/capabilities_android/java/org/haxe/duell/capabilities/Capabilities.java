@@ -42,6 +42,12 @@ public final class Capabilities
         return metrics.heightPixels;
     }
 
+    public static double getDensity()
+    {
+        DisplayMetrics metrics = DuellActivity.getInstance().getResources().getDisplayMetrics();
+        return metrics.density;
+    }
+
     public static boolean isLandscape()
     {
         return DuellActivity.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;

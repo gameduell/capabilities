@@ -1,12 +1,12 @@
+/*
+ * Copyright (c) 2003-2015 GameDuell GmbH, All Rights Reserved
+ * This document is strictly confidential and sole property of GameDuell GmbH, Berlin, Germany
+ */
+
 package capabilities;
 
 import capabilities.Platform;
 
-/**
- * @author kgar
- * @date  16/01/15
- * Copyright (c) 2014 GameDuell GmbH
- */
 extern class Capabilities
 {
 	/**
@@ -38,6 +38,11 @@ extern class Capabilities
 	* resolutionY the screen resolution height of the current device the app running on
 	*/
 	public var resolutionY(get, never): Int;
+
+	/**
+        Returns 1.0 for a screen pixel density of 160dpi.
+     */
+	public var density(get, never): Float;
 
 	/**
 	* deviceOrientation the device orientation of mobile device

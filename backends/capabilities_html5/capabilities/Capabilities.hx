@@ -1,9 +1,10 @@
-package capabilities;
-/**
- * @author kgar
- * @date  16/01/15
- * Copyright (c) 2014 GameDuell GmbH
+/*
+ * Copyright (c) 2003-2015 GameDuell GmbH, All Rights Reserved
+ * This document is strictly confidential and sole property of GameDuell GmbH, Berlin, Germany
  */
+
+package capabilities;
+
 import preferences.Editor;
 import preferences.Preferences;
 import js.Browser;
@@ -40,6 +41,7 @@ class Capabilities
 
     public var resolutionX(get, null): Int;
     public var resolutionY(get, null): Int;
+    public var density(get, never): Float;
 
     public var deviceOrientation(get, null): DeviceOrientation;
     public var deviceName(get, null): String;
@@ -83,7 +85,7 @@ class Capabilities
         parseBrowserData();
     }
 
-    public function get_isDebug(): Bool
+    private function get_isDebug(): Bool
     {
     #if debug
         return true;
@@ -92,12 +94,12 @@ class Capabilities
     #end
     }
 
-    public function get_applicationVersion(): String
+    private function get_applicationVersion(): String
     {
         return BuildInfo.instance().applicationVersion;
     }
 
-    public function get_os(): OS
+    private function get_os(): OS
     {
         var os: OS =
         {
@@ -109,17 +111,22 @@ class Capabilities
         return os;
     }
 
-	public function get_resolutionX(): Int
+    private function get_resolutionX(): Int
 	{
         return Browser.window.screen.availWidth;
     }
 
-    public function get_resolutionY(): Int
+    private function get_resolutionY(): Int
     {
         return Browser.window.screen.availHeight;
     }
 
-    public function get_deviceID(): String
+    private function get_density(): Float
+    {
+        return 1.0; // TODO Find out if we are running in a retina browser
+    }
+
+    private function get_deviceID(): String
     {
         return uniqueID;
     }
@@ -319,37 +326,37 @@ class Capabilities
                s4() + '-' + s4() + s4() + s4();
     }
 
-	public function get_deviceOrientation(): DeviceOrientation
+    private function get_deviceOrientation(): DeviceOrientation
 	{
         return DeviceOrientation.UNKNOWN;
 	}
 
-    public function get_advertisingIdentifier(): String
+    private function get_advertisingIdentifier(): String
     {
         return deviceID;
     }
 
-	public function get_platform(): Platform
+    private function get_platform(): Platform
 	{
 		return Platform.HTML5;
 	}
 
-    public function get_buildInfo(): BuildInfo
+    private function get_buildInfo(): BuildInfo
     {
         return BuildInfo.instance();
     }
 
-	public function get_applicationName(): String
+    private function get_applicationName(): String
 	{
 		return BuildInfo.instance().applicationName;
 	}
 
-	public function get_deviceName(): String
+    private function get_deviceName(): String
 	{
 		return browserData.name;
 	}
 
-    public function get_preferredLanguage(): String
+    private function get_preferredLanguage(): String
     {
         var language: String = Browser.navigator.language;
         var idx: Int = language.indexOf("-");
