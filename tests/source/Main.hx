@@ -24,7 +24,7 @@ class Main
 
     private function startAfterDuellIsInitialized(): Void
     {
-        r = new TestRunner(testComplete);
+        r = new TestRunner(testComplete, DuellKit.instance().onError);
         r.add(new CapabilitiesTest());
         #if test
 
@@ -33,7 +33,7 @@ class Main
             #else
             r.addLogger(new TestHTTPLogger(new TestSimpleLogger()));
             #end
-            
+
         #else
             r.addLogger(new TestSimpleLogger());
         #end
