@@ -3,6 +3,7 @@
 
     <ndll name="ioscapabilities" build-file-path="project/Build.xml" bin-path="ndll" />
 
+    <duelllib name="preferences" version="3.0.0+" />
     <platform-config>
         <ios>
             <framework name="AdSupport.framework" />
