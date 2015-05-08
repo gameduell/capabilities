@@ -1,4 +1,4 @@
 <xml>
-	<compilerflag value="-I${haxelib:capabilities}/backends/capabilities_ios/project/include" />
+	<compilerflag value="-I${haxelib:duell_capabilities}/backends/capabilities_ios/project/include" />
 </xml>
 
