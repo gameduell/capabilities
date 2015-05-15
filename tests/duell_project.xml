@@ -8,8 +8,8 @@
 	<source path="source" />
 
 	<duelllib name="capabilities" version="master"/>
-    <duelllib name="unittest" version="3.0.0+" />
-    <duelllib name="duellkit" version="3.0.0+" />
+    <duelllib name="unittest" version="4.0.0+" />
+    <duelllib name="duellkit" version="4.0.0+" />
 
     <platform-config>
         <ios>
