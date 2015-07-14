@@ -8,6 +8,7 @@ package capabilities;
 import hxjni.JNI;
 import capabilities.Platform;
 
+@:keep
 class Capabilities
 {
     private static var retrieveAdvertisementIdNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
