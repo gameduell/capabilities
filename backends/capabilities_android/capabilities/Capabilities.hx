@@ -13,8 +13,8 @@ class Capabilities
 {
     private static var retrieveAdvertisementIdNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "retrieveAdvertisementId", "(Lorg/haxe/duell/hxjni/HaxeObject;)V");
-    private static var getDeviceNameNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
-    "getDeviceName", "()Ljava/lang/String;");
+    private static var getDeviceModelNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "getDeviceModel", "()Ljava/lang/String;");
     private static var getSystemVersionNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getSystemVersion", "()Ljava/lang/String;");
     private static var getSerialNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
@@ -47,7 +47,8 @@ class Capabilities
     public var density(get, never): Float;
 
 	public var deviceOrientation(get, never): DeviceOrientation;
-	public var deviceName(get, never): String;
+	public var deviceModel(get, never): String;
+    public var deviceName(get, never): String;
 	public var deviceID(get, never): String;
 	public var platform(get, never): Platform;
 
@@ -172,10 +173,15 @@ class Capabilities
 		return BuildInfo.instance().applicationName;
 	}
 
-    private function get_deviceName(): String
-	{
-		return getDeviceNameNative();
-	}
+    private function get_deviceModel(): String
+    {
+        return getDeviceModelNative();
+    }
+
+    private inline function get_deviceName(): String
+    {
+        return os.name;
+    }
 
     private function get_deviceType(): DeviceType
     {

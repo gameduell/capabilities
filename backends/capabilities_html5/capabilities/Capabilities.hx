@@ -44,6 +44,7 @@ class Capabilities
     public var density(get, never): Float;
 
     public var deviceOrientation(get, null): DeviceOrientation;
+    public var deviceModel(get, null): String;
     public var deviceName(get, null): String;
     public var deviceID(get, null): String;
     public var platform(get, null): Platform;
@@ -351,9 +352,14 @@ class Capabilities
 		return BuildInfo.instance().applicationName;
 	}
 
+    private function get_deviceModel(): String
+    {
+        return browserData.name;
+    }
+
     private function get_deviceName(): String
 	{
-		return browserData.name;
+		return os.name;
 	}
 
     private function get_preferredLanguage(): String

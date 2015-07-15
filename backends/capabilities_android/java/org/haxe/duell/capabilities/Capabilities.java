@@ -118,7 +118,7 @@ public final class Capabilities
      *
      * @return the pretty-print of the device name
      */
-    public static String getDeviceName()
+    public static String getDeviceModel()
     {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;

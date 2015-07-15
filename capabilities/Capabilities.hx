@@ -51,6 +51,11 @@ extern class Capabilities
 	*/
 	public var deviceOrientation(get, never): DeviceOrientation;
 
+    /**
+	* deviceName the device model the application running on
+	*/
+    public var deviceModel(get, never): String;
+
 	/**
 	* deviceName the device name the application running on
 	* WARNING : this can be null in FLASH or HTML5

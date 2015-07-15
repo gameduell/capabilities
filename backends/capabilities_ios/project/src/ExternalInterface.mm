@@ -10,6 +10,7 @@
 #endif
 #import <UIKit/UIKit.h>
 #import <AdSupport/AdSupport.h>
+#import <sys/utsname.h>
 #include <hx/CFFI.h>
 
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -67,6 +68,22 @@ static value ioscapabilities_getAdvertisingIdentifier()
     }
 }
 DEFINE_PRIM(ioscapabilities_getAdvertisingIdentifier,0);
+///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+static value ioscapabilities_getDeviceModel()
+{
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    NSString *deviceModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    deviceModel = [deviceModel stringByReplacingOccurrencesOfString:@"," withString:@"."];
+
+    NSUInteger index = [deviceModel rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]].location;
+    NSString *deviceNumber = [deviceModel substringFromIndex:index];
+    deviceModel = [deviceModel substringToIndex:index];
+
+    NSString *str = [NSString stringWithFormat:@"%@#%@", deviceModel, deviceNumber];
+    return alloc_string(str.UTF8String);
+}
+DEFINE_PRIM(ioscapabilities_getDeviceModel,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static value ioscapabilities_getDeviceName()
 {

@@ -13,6 +13,7 @@ class Capabilities
     private static var getSystemNameNative = Lib.load("ioscapabilities","ioscapabilities_getSystemName",0);
     private static var getSystemVersionNative = Lib.load("ioscapabilities","ioscapabilities_getSystemVersion",0);
     private static var getDeviceIDNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceID",0);
+    private static var getDeviceModelNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceModel",0);
     private static var getDeviceNameNative = Lib.load("ioscapabilities","ioscapabilities_getDeviceName",0);
     private static var getAdvertisingIdentifierNative = Lib.load("ioscapabilities","ioscapabilities_getAdvertisingIdentifier",0);
     private static var getResolutionXNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionX",0);
@@ -35,6 +36,7 @@ class Capabilities
     public var density(get, never): Float;
 
 	public var deviceOrientation(get, never): DeviceOrientation;
+    public var deviceModel(get, never): String;
 	public var deviceName(get, never): String;
 	public var deviceID(get, never): String;
     public var advertisingIdentifier(get, never): String;
@@ -142,6 +144,11 @@ class Capabilities
 	{
 		return BuildInfo.instance().applicationName;
 	}
+
+    private function get_deviceModel(): String
+    {
+        return getDeviceModelNative();
+    }
 
 	private function get_deviceName(): String
 	{
