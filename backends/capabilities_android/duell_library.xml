@@ -5,6 +5,7 @@
 
     <platform-config>
         <android>
+            <proguard path="proguard.cfg" />
             <java-source name="CAPABILITIES" path="java" />
         </android>
     </platform-config>
