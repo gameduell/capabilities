@@ -10,6 +10,11 @@ The Capabilities Library provides properties that describe the system and runtim
 - Added device model
 - DCE compatibility
 
+== 4.1.0 ==
+
+- Added device model
+- DCE compatibility
+
 == 1.0.0 ==
 
 - Changed the API to require the use of an initialize() method before accessing the instance
