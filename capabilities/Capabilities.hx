@@ -98,6 +98,12 @@ extern class Capabilities
     public var preferredLanguage(get, never): String;
 
 	/**
+	* Returns true if the device is rooted/jailbroken
+	* On HTML5 it returns false anyway.
+	* **/
+	public var isRooted(get, never): Bool;
+
+	/**
 	* get the Capabilities instance
 	*/
 	public static function instance(): Capabilities;

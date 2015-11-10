@@ -54,6 +54,8 @@ class Capabilities
     public var deviceType(default, null): DeviceType;
     public var preferredLanguage(get, never): String;
 
+    public var isRooted(get, never): Bool;
+
     private var uniqueID: String;
 
     public static function initialize(callback: Void -> Void): Void
@@ -377,5 +379,10 @@ class Capabilities
             // the language is in the format "en-US"
             return language.substring(0, idx);
         }
+    }
+
+    private function get_isRooted(): Bool
+    {
+        return false;
     }
 }

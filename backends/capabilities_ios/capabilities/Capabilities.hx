@@ -22,8 +22,9 @@ class Capabilities
     private static var getPreferredLanguageNative = Lib.load("ioscapabilities","ioscapabilities_getPreferredLanguage",0);
     private static var isLandscapeNative = Lib.load("ioscapabilities","ioscapabilities_isLandscapeNative",0);
     private static var isIPhoneNative = Lib.load("ioscapabilities","ioscapabilities_isIPhone",0);
+    private static var isRootedDevice = Lib.load("ioscapabilities","ioscapabilities_isJailbroken",0);
 
-	private static var psInstance: Capabilities = null;
+    private static var psInstance: Capabilities = null;
 
 	public var applicationName(get, never): String;
 	public var applicationVersion(get, never): String;
@@ -44,6 +45,8 @@ class Capabilities
 	public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
     public var preferredLanguage(get, never): String;
+
+    public var isRooted(get, never): Bool;
 
     private function new()
     {}
@@ -163,5 +166,10 @@ class Capabilities
     private function get_preferredLanguage(): String
     {
         return getPreferredLanguageNative();
+    }
+
+    private function get_isRooted(): Bool
+    {
+        return isRootedDevice();
     }
 }

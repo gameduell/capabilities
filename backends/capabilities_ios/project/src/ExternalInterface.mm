@@ -36,6 +36,43 @@ static value ioscapabilities_isLandscapeNative()
 }
 DEFINE_PRIM(ioscapabilities_isLandscapeNative,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+static value ioscapabilities_isJailbroken()
+{
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/Applications/Cydia.app"])
+    {
+        return alloc_bool(YES);
+    }
+    else if([[NSFileManager defaultManager] fileExistsAtPath:@"/bin/bash"])
+    {
+        return alloc_bool(YES);
+    }
+    else if([[NSFileManager defaultManager] fileExistsAtPath:@"/etc/apt"])
+    {
+        return alloc_bool(YES);
+    }
+
+    /// Test for file write permission, maybe against apple rules
+    /// TESTED (only on non rooted devices)
+    //NSError *error;
+    //NSString *stringToBeWritten = @"This is a test.";
+    //
+    //[stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    //
+    //if(error==nil)
+    //{
+        //Device is jailbroken
+    //    return alloc_bool(YES);
+    //}
+    //else
+    //{
+        //Device is not jailbroken
+    //    [[NSFileManager defaultManager] removeItemAtPath:@"/private/jailbreak.txt" error:nil];
+    //}
+
+    return alloc_bool(NO);
+}
+DEFINE_PRIM(ioscapabilities_isJailbroken,0);
+///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static value ioscapabilities_getDeviceID()
 {
     UIDevice *device = [UIDevice currentDevice];

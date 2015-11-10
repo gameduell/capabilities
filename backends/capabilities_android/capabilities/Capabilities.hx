@@ -27,6 +27,8 @@ class Capabilities
     "getDensity", "()D");
     private static var isLandscapeNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "isLandscape", "()Z");
+    private static var isRootedDevice = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "isRootedDevice", "()Z");
     private static var isPhoneNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "isPhone", "()Z");
     private static var getPreferredLanguageNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
@@ -58,6 +60,7 @@ class Capabilities
     public var deviceType(get, never): DeviceType;
 
     public var preferredLanguage(get, never): String;
+    public var isRooted(get, never): Bool;
 
     private function new(callback: Void -> Void)
     {
@@ -191,5 +194,10 @@ class Capabilities
     private function get_preferredLanguage(): String
     {
         return getPreferredLanguageNative();
+    }
+
+    private function get_isRooted(): Bool
+    {
+        return isRootedDevice();
     }
 }
