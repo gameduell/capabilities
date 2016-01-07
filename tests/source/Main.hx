@@ -26,17 +26,15 @@ class Main
     {
         r = new TestRunner(testComplete, DuellKit.instance().onError);
         r.add(new CapabilitiesTest());
-        #if test
 
-            #if jenkins
+        #if jenkins
             r.addLogger(new TestHTTPLogger(new TestJUnitLogger()));
-            #else
-            r.addLogger(new TestHTTPLogger(new TestSimpleLogger()));
-            #end
-
         #else
-            r.addLogger(new TestSimpleLogger());
+            r.addLogger(new TestHTTPLogger(new TestSimpleLogger()));
         #end
+
+        //if you are using a device with android version < 5.0 use this logger without http
+        //r.addLogger(new TestSimpleLogger());
 
         r.run();
     }
