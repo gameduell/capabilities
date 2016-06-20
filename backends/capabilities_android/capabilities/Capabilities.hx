@@ -46,6 +46,8 @@ class Capabilities
     "getResolutionY", "()I");
     private static var getDensityNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getDensity", "()D");
+    private static var getTotalMemory = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "getTotalMemory", "()D");
     private static var isLandscapeNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "isLandscape", "()Z");
     private static var isRootedDevice = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
@@ -68,6 +70,7 @@ class Capabilities
 	public var resolutionX(get, never): Int;
 	public var resolutionY(get, never): Int;
     public var density(get, never): Float;
+    public var totalMemory(get, never): Float;
 
 	public var deviceOrientation(get, never): DeviceOrientation;
 	public var deviceModel(get, never): String;
@@ -170,6 +173,11 @@ class Capabilities
     private function get_density(): Float
     {
         return getDensityNative();
+    }
+
+    private function get_totalMemory(): Float
+    {
+        return getTotalMemory();
     }
 
     private function get_deviceOrientation(): DeviceOrientation

@@ -66,6 +66,11 @@ extern class Capabilities
 	public var density(get, never): Float;
 
 	/**
+		Returns the amount of physical memory in bytes.
+ 	*/
+	public var totalMemory(get, never): Float;
+
+	/**
 	* deviceOrientation the device orientation of mobile device
 	* WARNING : this can be null in FLASH or HTML5
 	* the result will be DeviceOrientation.Landscape or DeviceOrientation.Portrait

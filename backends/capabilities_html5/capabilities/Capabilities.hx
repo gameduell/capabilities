@@ -63,6 +63,7 @@ class Capabilities
     public var resolutionX(get, null): Int;
     public var resolutionY(get, null): Int;
     public var density(get, never): Float;
+    public var totalMemory(get, never): Float;
 
     public var deviceOrientation(get, null): DeviceOrientation;
     public var deviceModel(get, null): String;
@@ -148,6 +149,11 @@ class Capabilities
     private function get_density(): Float
     {
         return 1.0; // TODO Find out if we are running in a retina browser
+    }
+
+    private function get_totalMemory(): Float
+    {
+        return Math.POSITIVE_INFINITY; // TODO Find out what to do in browsers
     }
 
     private function get_deviceID(): String

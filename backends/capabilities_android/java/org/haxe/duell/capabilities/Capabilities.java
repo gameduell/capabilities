@@ -26,6 +26,9 @@
 
 package org.haxe.duell.capabilities;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.MemoryInfo;
+import android.content.Context;
 import android.annotation.TargetApi;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -70,6 +73,22 @@ public final class Capabilities
     {
         DisplayMetrics metrics = DuellActivity.getInstance().getResources().getDisplayMetrics();
         return metrics.density;
+    }
+
+    public static double getTotalMemory()
+    {
+        MemoryInfo mi = new MemoryInfo();
+        ActivityManager activityManager = (ActivityManager) DuellActivity.getInstance().getSystemService(Context.ACTIVITY_SERVICE);
+        activityManager.getMemoryInfo(mi);
+
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN)
+        {
+            return 0;
+        }
+        else
+        {
+            return mi.totalMem;
+        }
     }
 
     public static boolean isLandscape()
