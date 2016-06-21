@@ -81,13 +81,13 @@ public final class Capabilities
         ActivityManager activityManager = (ActivityManager) DuellActivity.getInstance().getSystemService(Context.ACTIVITY_SERVICE);
         activityManager.getMemoryInfo(mi);
 
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN)
         {
-            return 0;
+            return mi.totalMem;
         }
         else
         {
-            return mi.totalMem;
+            return 0;
         }
     }
 
