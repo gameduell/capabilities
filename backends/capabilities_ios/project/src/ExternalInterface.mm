@@ -202,6 +202,12 @@ static value ioscapabilities_getDensity()
 }
 DEFINE_PRIM(ioscapabilities_getDensity,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+static value ioscapabilities_getTotalMemory()
+{
+    return alloc_float([NSProcessInfo processInfo].physicalMemory);
+}
+DEFINE_PRIM(ioscapabilities_getTotalMemory,0);
+///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static value ioscapabilities_getPreferredLanguage()
 {
     NSString *preferredLanguage = [[NSLocale preferredLanguages] objectAtIndex:0];

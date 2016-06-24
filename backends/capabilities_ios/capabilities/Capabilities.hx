@@ -40,6 +40,7 @@ class Capabilities
     private static var getResolutionXNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionX",0);
     private static var getResolutionYNative = Lib.load("ioscapabilities","ioscapabilities_getResolutionY",0);
     private static var getDensityNative = Lib.load("ioscapabilities","ioscapabilities_getDensity",0);
+    private static var getTotalMemory = Lib.load("ioscapabilities","ioscapabilities_getTotalMemory",0);
     private static var getPreferredLanguageNative = Lib.load("ioscapabilities","ioscapabilities_getPreferredLanguage",0);
     private static var isLandscapeNative = Lib.load("ioscapabilities","ioscapabilities_isLandscapeNative",0);
     private static var isIPhoneNative = Lib.load("ioscapabilities","ioscapabilities_isIPhone",0);
@@ -56,6 +57,7 @@ class Capabilities
 	public var resolutionX(get, never): Int;
 	public var resolutionY(get, never): Int;
     public var density(get, never): Float;
+    public var totalMemory(get, never): Float;
 
 	public var deviceOrientation(get, never): DeviceOrientation;
     public var deviceModel(get, never): String;
@@ -137,6 +139,11 @@ class Capabilities
     private function get_density(): Float
     {
         return getDensityNative();
+    }
+
+    private function get_totalMemory(): Float
+    {
+        return getTotalMemory();
     }
 
 	private function get_deviceOrientation(): DeviceOrientation
