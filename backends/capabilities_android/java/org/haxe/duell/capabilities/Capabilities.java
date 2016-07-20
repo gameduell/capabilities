@@ -130,13 +130,7 @@ public final class Capabilities
                 catch (GooglePlayServicesRepairableException e) {}
                 catch (NullPointerException e) {}
 
-                final String param = id;
-                DuellActivity.getInstance().queueOnHaxeRunloop(new Runnable() {
-                    @Override
-                    public void run() {
-                        haxeObject.call1("onDataReceived", param);
-                    }
-                });
+                haxeObject.call1("onDataReceived", id);
             }
         }).start();
     }
