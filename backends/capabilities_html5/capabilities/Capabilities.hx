@@ -320,24 +320,31 @@ class Capabilities
 
         if (~/Windows/.match(os))
         {
-            osVersion = ~/Windows (.*)/.split(os)[1];
+            var r = ~/Windows (.*)/;
+            r.match(os);
+            osVersion = r.matched(1);
             os = 'Windows';
         }
 
         switch (os)
         {
             case 'Mac OS X':
-                osVersion = ~/Mac OS X (10[._\d]+)/.split(nAgt)[1];
+                var r = ~/Mac OS X (10[._\d]+)/;
+                r.match(nAgt);
+                osVersion = r.matched(1);
 
             case 'Android':
             {
-                osVersion = ~/Android ([._\d]+)/.split(nAgt)[1];
+                var r = ~/Android ([._\d]+)/;
+                r.match(nAgt);
+                osVersion = r.matched(1);
                 deviceType = DeviceType.MOBILE_BROWSER;
             }
             case 'iOS':
             {
-                var osVersionArray = ~/OS (\d+)_(\d+)_?(\d+)?/.split(nVer);
-                osVersion = osVersionArray[1] + '.' + osVersionArray[2] + '.' + "x";
+                var r = ~/OS (\d+)_(\d+)_?(\d+)?/;
+                r.match(nVer);
+                osVersion = r.matched(1) + '.' + r.matched(2) + '.' + "x";
                 deviceType = DeviceType.MOBILE_BROWSER;
             }
         }
