@@ -56,6 +56,10 @@ class Capabilities
     "isPhone", "()Z");
     private static var getPreferredLanguageNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getPreferredLanguage", "()Ljava/lang/String;");
+    private static var getModelNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "getModel", "()Ljava/lang/String;");
+    private static var getManufacturerNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "getManufacturer", "()Ljava/lang/String;");
 
     private static var psInstance: Capabilities;
 
@@ -85,6 +89,10 @@ class Capabilities
 
     public var preferredLanguage(get, never): String;
     public var isRooted(get, never): Bool;
+
+    // Android-specific
+    public var androidModel(get, never): String;
+    public var androidManufacturer(get, never): String;
 
     private function new(callback: Void -> Void)
     {
@@ -228,5 +236,15 @@ class Capabilities
     private function get_isRooted(): Bool
     {
         return isRootedDevice();
+    }
+
+    private function get_androidModel(): String
+    {
+        return getModelNative();
+    }
+
+    private function get_androidManufacturer(): String
+    {
+        return getManufacturerNative();
     }
 }

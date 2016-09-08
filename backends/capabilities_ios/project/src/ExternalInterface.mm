@@ -29,6 +29,7 @@
 #endif
 #import <UIKit/UIKit.h>
 #import <AdSupport/AdSupport.h>
+#import <sys/sysctl.h>
 #import <sys/utsname.h>
 #include <hx/CFFI.h>
 
@@ -214,6 +215,32 @@ static value ioscapabilities_getPreferredLanguage()
     return alloc_string(preferredLanguage.UTF8String);
 }
 DEFINE_PRIM(ioscapabilities_getPreferredLanguage,0);
+///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+static value ioscapabilities_getHardwareVersion()
+{
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = (char *) malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString * platform = [NSString stringWithUTF8String:machine];
+    free(machine);
+
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression
+                                  regularExpressionWithPattern:@"\\w+(\\d+,\\d+)"
+                                  options:NSRegularExpressionCaseInsensitive
+                                  error:&error];
+
+    NSTextCheckingResult *match = [regex firstMatchInString:platform
+                                                    options:0
+                                                      range:NSMakeRange(0, [platform length])];
+    if (match) {
+        return alloc_string([platform substringWithRange:[match rangeAtIndex:1]].UTF8String);
+    }
+
+    return alloc_null();
+}
+DEFINE_PRIM(ioscapabilities_getHardwareVersion,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 extern "C" int ioscapabilities_register_prims () { return 0; }
