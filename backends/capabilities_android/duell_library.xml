@@ -7,8 +7,8 @@
         <android>
             <proguard path="proguard.cfg" />
             <java-source name="CAPABILITIES" path="java" />
-            <gradle-dependency value="com.google.android.gms:play-services-ads:8.4.0" />
-            <gradle-dependency value="com.google.android.gms:play-services-base:8.4.0" />
+            <gradle-dependency value="com.google.android.gms:play-services-ads:9.4.0" />
+            <gradle-dependency value="com.google.android.gms:play-services-base:9.4.0" />
         </android>
     </platform-config>
 </library>
