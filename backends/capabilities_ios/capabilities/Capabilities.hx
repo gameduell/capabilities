@@ -45,6 +45,7 @@ class Capabilities
     private static var isLandscapeNative = Lib.load("ioscapabilities","ioscapabilities_isLandscapeNative",0);
     private static var isIPhoneNative = Lib.load("ioscapabilities","ioscapabilities_isIPhone",0);
     private static var isRootedDevice = Lib.load("ioscapabilities","ioscapabilities_isJailbroken",0);
+    private static var getHardwareVersionNative = Lib.load("ioscapabilities","ioscapabilities_getHardwareVersion",0);
 
     private static var psInstance: Capabilities = null;
 
@@ -70,6 +71,9 @@ class Capabilities
     public var preferredLanguage(get, never): String;
 
     public var isRooted(get, never): Bool;
+
+    // ios-specific
+    public var iOSHardwareVersion(get, never): String;
 
     private function new()
     {}
@@ -199,5 +203,10 @@ class Capabilities
     private function get_isRooted(): Bool
     {
         return isRootedDevice();
+    }
+
+    private function get_iOSHardwareVersion(): String
+    {
+        return getHardwareVersionNative();
     }
 }

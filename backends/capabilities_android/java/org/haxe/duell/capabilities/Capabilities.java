@@ -156,6 +156,26 @@ public final class Capabilities
     }
 
     /**
+     * Retrieves the device model.
+     *
+     * @return the device model
+     */
+    public static String getModel()
+    {
+        return Build.MODEL;
+    }
+
+    /**
+     * Retrieves the device manufacturer.
+     *
+     * @return the device manufacturer
+     */
+    public static String getManufacturer()
+    {
+        return Build.MANUFACTURER;
+    }
+
+    /**
      * Retrieves the device name, with manufacturer and model.
      *
      * @return the pretty-print of the device name
