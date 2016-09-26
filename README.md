@@ -5,6 +5,10 @@ The Capabilities Library provides properties that describe the system and runtim
 
 = Release Log =
 
+== 7.0.0 ==
+
+- updated to the latest android build plugin
+
 == 6.0.0 ==
 
 - updated to the latest android build plugin
