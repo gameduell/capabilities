@@ -31,6 +31,7 @@
 #import <AdSupport/AdSupport.h>
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
+#import "DeviceUID.h"
 #include <hx/CFFI.h>
 
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -215,6 +216,12 @@ static value ioscapabilities_getPreferredLanguage()
     return alloc_string(preferredLanguage.UTF8String);
 }
 DEFINE_PRIM(ioscapabilities_getPreferredLanguage,0);
+///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+static value ioscapabilities_getPersistentID()
+{
+    return alloc_string([DeviceUID uid].UTF8String);
+}
+DEFINE_PRIM(ioscapabilities_getPersistentID,0);
 ///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static value ioscapabilities_getHardwareVersion()
 {
