@@ -206,9 +206,13 @@ public final class Capabilities
 
     public static String getPersistentID()
     {
+        if (id == null) id = DeviceUID.readIdFromStorage();
+        if (id == null) id = DeviceUID.readIdFromPreferences();
         if (id == null) id = getAndroidId();
         if (id == null) id = advertisementId;
         if (id == null) id = getUniquePseudoID();
+
+        DeviceUID.saveId(id);
 
         return id;
     }

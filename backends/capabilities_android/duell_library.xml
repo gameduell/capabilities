@@ -9,6 +9,10 @@
             <java-source name="CAPABILITIES" path="java" />
             <gradle-dependency value="com.google.android.gms:play-services-ads:9.4.0" />
             <gradle-dependency value="com.google.android.gms:play-services-base:9.4.0" />
+
+            <permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <permission name="android.permission.READ_EXTERNAL_STORAGE" />
+
         </android>
     </platform-config>
 </library>
