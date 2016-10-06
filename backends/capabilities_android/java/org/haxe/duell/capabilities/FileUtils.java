@@ -34,15 +34,13 @@ public final class FileUtils {
 
     public static boolean isExternalMediaAvailable(boolean needsWritePermissions) {
         String state = Environment.getExternalStorageState();
-        if ("mounted".equals(state)) {
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
         }
-        if (!"mounted_ro".equals(state)) {
-            return false;
+        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return !needsWritePermissions;
         }
-        if (needsWritePermissions) {
-            return false;
-        }
+
         return true;
     }
 

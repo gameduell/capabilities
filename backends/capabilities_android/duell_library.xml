@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<library>
+<library xmlns="duell">
 
-    <supported-build-plugin name="android" version="6.0.0+" />
+    <supported-build-plugin name="android" version="7.1.0+" />
 
     <platform-config>
         <android>
             <proguard path="proguard.cfg" />
             <java-source name="CAPABILITIES" path="java" />
-            <gradle-dependency value="com.google.android.gms:play-services-ads:9.4.0" />
-            <gradle-dependency value="com.google.android.gms:play-services-base:9.4.0" />
+            <gradle-dependency value="com.google.android.gms:play-services-ads:9.6.1" />
+            <gradle-dependency value="com.google.android.gms:play-services-base:9.6.1" />
 
-            <permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
             <permission name="android.permission.READ_EXTERNAL_STORAGE" />
+            <permission name="android.permission.WRITE_EXTERNAL_STORAGE" maxLevel="22" />
 
         </android>
     </platform-config>
