@@ -76,7 +76,7 @@ class Capabilities
     public var deviceType(default, null): DeviceType;
     public var preferredLanguage(get, never): String;
 
-    public var getPersistentID(get, never): String;
+    public var persistentID(get, never): String;
 
     public var isRooted(get, never): Bool;
 
