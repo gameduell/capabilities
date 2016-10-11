@@ -76,6 +76,8 @@ class Capabilities
     public var deviceType(default, null): DeviceType;
     public var preferredLanguage(get, never): String;
 
+    public var persistentID(get, never): String;
+
     public var isRooted(get, never): Bool;
 
     private var uniqueID: String;
@@ -413,6 +415,12 @@ class Capabilities
             // the language is in the format "en-US"
             return language.substring(0, idx);
         }
+    }
+
+    private function get_persistentID(): String
+    {
+        // as persistent as it can go in HTML5
+        return deviceID;
     }
 
     private function get_isRooted(): Bool

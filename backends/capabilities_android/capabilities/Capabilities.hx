@@ -56,6 +56,8 @@ class Capabilities
     "isPhone", "()Z");
     private static var getPreferredLanguageNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getPreferredLanguage", "()Ljava/lang/String;");
+    private static var getPersistentIDNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
+    "getPersistentID", "()Ljava/lang/String;");
     private static var getModelNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
     "getModel", "()Ljava/lang/String;");
     private static var getManufacturerNative = JNI.createStaticMethod("org/haxe/duell/capabilities/Capabilities",
@@ -89,6 +91,8 @@ class Capabilities
 
     public var preferredLanguage(get, never): String;
     public var isRooted(get, never): Bool;
+
+    public var persistentID(get, never): String;
 
     // Android-specific
     public var androidModel(get, never): String;
@@ -246,5 +250,10 @@ class Capabilities
     private function get_androidManufacturer(): String
     {
         return getManufacturerNative();
+    }
+
+    private function get_persistentID(): String
+    {
+        return getPersistentIDNative();
     }
 }

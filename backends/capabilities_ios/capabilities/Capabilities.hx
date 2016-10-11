@@ -46,6 +46,7 @@ class Capabilities
     private static var isIPhoneNative = Lib.load("ioscapabilities","ioscapabilities_isIPhone",0);
     private static var isRootedDevice = Lib.load("ioscapabilities","ioscapabilities_isJailbroken",0);
     private static var getHardwareVersionNative = Lib.load("ioscapabilities","ioscapabilities_getHardwareVersion",0);
+    private static var getPersistentIDNative = Lib.load("ioscapabilities","ioscapabilities_getPersistentID",0);
 
     private static var psInstance: Capabilities = null;
 
@@ -69,6 +70,7 @@ class Capabilities
 	public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
     public var preferredLanguage(get, never): String;
+    public var persistentID(get, never): String;
 
     public var isRooted(get, never): Bool;
 
@@ -198,6 +200,11 @@ class Capabilities
     private function get_preferredLanguage(): String
     {
         return getPreferredLanguageNative();
+    }
+
+    private function get_persistentID(): String
+    {
+        return getPersistentIDNative();
     }
 
     private function get_isRooted(): Bool

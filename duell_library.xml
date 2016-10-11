@@ -3,6 +3,8 @@
 
     <haxelib name="msignal" version="1.2.4" />
 
+    <duelllib name="preferences" version="7.0.0+" />
+
     <include path="backends/capabilities_html5/duell_library.xml" if="html5" />
     <include path="backends/capabilities_android/duell_library.xml" if="android" />
     <include path="backends/capabilities_ios/duell_library.xml" if="ios" />

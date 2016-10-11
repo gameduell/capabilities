@@ -124,6 +124,12 @@ extern class Capabilities
     public var preferredLanguage(get, never): String;
 
 	/**
+		Retrieves an ID which should be persistent for the current platform under most circumstances (i.e. good to use
+		for user identification).
+     */
+	public var persistentID(get, never): String;
+
+	/**
 	* Returns true if the device is rooted/jailbroken
 	* On HTML5 it returns false anyway.
 	* **/

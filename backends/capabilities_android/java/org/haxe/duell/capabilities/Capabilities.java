@@ -46,12 +46,16 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Locale;
+import java.util.UUID;
 import java.lang.Process;
 import android.util.Log;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public final class Capabilities
 {
+    private static String id = null;
+    private static String advertisementId = null;
+
     private Capabilities()
     {
         // can't be instantiated
@@ -118,19 +122,19 @@ public final class Capabilities
             @Override
             public void run()
             {
-                String id = getAndroidId();
+                advertisementId = getAndroidId();
 
                 try
                 {
                     AdvertisingIdClient.Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(DuellActivity.getInstance());
-                    id = adInfo.getId();
+                    advertisementId = adInfo.getId();
                 }
                 catch (IOException e) {}
                 catch (GooglePlayServicesNotAvailableException e) {}
                 catch (GooglePlayServicesRepairableException e) {}
                 catch (NullPointerException e) {}
 
-                haxeObject.call1("onDataReceived", id);
+                haxeObject.call1("onDataReceived", advertisementId);
             }
         }).start();
     }
@@ -198,6 +202,37 @@ public final class Capabilities
     public static String getPreferredLanguage()
     {
         return Locale.getDefault().getLanguage();
+    }
+
+    public static String getPersistentID()
+    {
+        if (id == null) id = DeviceUID.readIdFromStorage();
+        if (id == null) id = DeviceUID.readIdFromPreferences();
+        if (id == null) id = getAndroidId();
+        if (id == null) id = advertisementId;
+        if (id == null) id = getUniquePseudoID();
+
+        DeviceUID.saveId(id);
+
+        return id;
+    }
+
+    private static String getUniquePseudoID()
+    {
+        String devIdShort = "35" + (Build.BOARD.length() % 10) + (Build.BRAND.length() % 10) +
+                (Build.CPU_ABI.length() % 10) + (Build.DEVICE.length() % 10) + (Build.MANUFACTURER.length() % 10) +
+                (Build.MODEL.length() % 10) + (Build.PRODUCT.length() % 10);
+        String serial;
+
+        try {
+            serial = android.os.Build.class.getField("SERIAL").get(null).toString();
+            return new UUID(devIdShort.hashCode(), serial.hashCode()).toString();
+        } catch (Exception exception) {
+            // String needs to be initialized
+            serial = "serial"; // some value
+        }
+
+        return new UUID(devIdShort.hashCode(), serial.hashCode()).toString();
     }
 
     private static String capitalize(final String s)
