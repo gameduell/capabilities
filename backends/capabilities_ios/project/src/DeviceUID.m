@@ -14,7 +14,7 @@
 #pragma mark - Public methods
 
 + (NSString *)uid {
-    return [[[DeviceUID alloc] initWithKey:@"deviceUID"] uid];
+    return [[[DeviceUID alloc] initWithKey:@"DeviceUID"] uid];
 }
 
 #pragma mark - Instance methods
@@ -122,7 +122,13 @@
         SEL advertisingIdentifierSelector = NSSelectorFromString(@"advertisingIdentifier");
         NSUUID *advertisingIdentifier = ((NSUUID* (*)(id, SEL))[sharedManager methodForSelector:advertisingIdentifierSelector])(sharedManager, advertisingIdentifierSelector);
         ifa = [advertisingIdentifier UUIDString];
+
+        if ([ifa isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
+            // we're running on iOS 10 and the advertising ID was reset, consider it nil
+            ifa = nil;
+        }
     }
+
     return ifa;
 }
 
