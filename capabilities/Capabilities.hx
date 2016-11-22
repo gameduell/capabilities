@@ -107,6 +107,12 @@ extern class Capabilities
 	*/
 	public var platform(get, never): Platform;
 
+    /**
+    * environment where the application is running in.
+    * result will be Environment.NATIVE (default) or Environment.GAMEROOM
+    */
+    public var environment(get, never):Environment;
+
 	/**
 	* buildInfo the build info collected while building the app
 	* containing build number, version, haxe arguments etc...

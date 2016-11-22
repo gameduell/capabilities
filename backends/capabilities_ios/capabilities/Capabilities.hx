@@ -67,6 +67,7 @@ class Capabilities
 	public var deviceID(get, never): String;
     public var advertisingIdentifier(get, never): String;
 	public var platform(get, never): Platform;
+    public var environment(get, never):Environment;
 	public var buildInfo(get, never): BuildInfo;
     public var deviceType(get, never): DeviceType;
     public var preferredLanguage(get, never): String;
@@ -171,6 +172,11 @@ class Capabilities
 	{
 		return Platform.IOS;
 	}
+
+    private function get_environment(): Environment
+    {
+        return Environment.NATIVE;
+    }
 
 	private function get_buildInfo(): BuildInfo
 	{

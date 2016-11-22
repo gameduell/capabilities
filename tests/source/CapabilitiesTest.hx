@@ -70,6 +70,24 @@ class CapabilitiesTest extends unittest.TestCase
         });
 	}
 
+    public function testEnvironment(): Void
+    {
+        assertAsyncStart("testEnvironment");
+
+        Capabilities.initialize(function(): Void
+        {
+        #if ios
+            assertEquals(Capabilities.instance().environment, Environment.NATIVE);
+        #elseif android
+            assertEquals(Capabilities.instance().environment, Environment.NATIVE);
+        #elseif html5
+            assertEquals(Capabilities.instance().environment, Environment.NATIVE);
+        #end
+
+            assertAsyncFinish("testEnvironment");
+        });
+    }
+
     public function testDeviceID(): Void
     {
         assertAsyncStart("testDeviceID");

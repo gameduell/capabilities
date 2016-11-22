@@ -83,6 +83,7 @@ class Capabilities
     public var deviceName(get, never): String;
 	public var deviceID(get, never): String;
 	public var platform(get, never): Platform;
+    public var environment(get, never):Environment;
 
     public var advertisingIdentifier(default, null): String;
 
@@ -206,6 +207,11 @@ class Capabilities
 	{
 		return Platform.ANDROID;
 	}
+
+    private function get_environment(): Environment
+    {
+        return Environment.NATIVE;
+    }
 
     private function get_buildInfo(): BuildInfo
 	{

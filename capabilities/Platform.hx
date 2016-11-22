@@ -40,3 +40,9 @@ enum Platform
     IOS;
     ANDROID;
 }
+
+enum Environment
+{
+    NATIVE;
+    GAMEROOM;
+}

@@ -70,6 +70,7 @@ class Capabilities
     public var deviceName(get, null): String;
     public var deviceID(get, null): String;
     public var platform(get, null): Platform;
+    public var environment(get, null):Environment;
     public var advertisingIdentifier(get, never): String;
 
     public var buildInfo(get, never): BuildInfo;
@@ -81,6 +82,7 @@ class Capabilities
     public var isRooted(get, never): Bool;
 
     private var uniqueID: String;
+    private var env:Environment;
 
     public static function initialize(callback: Void -> Void): Void
     {
@@ -270,6 +272,12 @@ class Capabilities
             majorVersion: majorVersion,
             userAgent : Browser.navigator.userAgent
         };
+
+        if( nAgt.indexOf( "FBAN/GamesWindowsDesktopApp" ) != -1 ){
+            env = Environment.GAMEROOM;
+        } else {
+            env = Environment.NATIVE;
+        }
     }
 
     private function parseOS(): Void
@@ -379,6 +387,11 @@ class Capabilities
 	{
 		return Platform.HTML5;
 	}
+
+    private function get_environment(): Environment
+    {
+        return env;
+    }
 
     private function get_buildInfo(): BuildInfo
     {
